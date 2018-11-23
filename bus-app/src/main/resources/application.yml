@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: BusSimulation
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+
+agent:
+  container:
+    port: 10099
+    host: localhost
+    no-display: true
