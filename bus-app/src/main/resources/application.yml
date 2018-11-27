@@ -7,7 +7,4 @@ spring:
     suffix: .html
 
 agent:
-  container:
-    port: 10099
-    host: localhost
-    no-display: true
+  conf: agent.properties
