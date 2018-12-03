@@ -8,3 +8,11 @@ spring:
 
 agent:
   conf: agent.properties
+  
+bus:
+  line: 509
+  brigade: 1
+  
+api:
+  um:
+    url: https://api.um.warszawa.pl/api
