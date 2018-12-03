@@ -5,14 +5,30 @@ spring:
     enabled: true
     prefix: classpath:/templates/
     suffix: .html
+  http:
+    converters:
+      preffered-json-mapper: gson
 
 agent:
   conf: agent.properties
   
 bus:
-  line: 509
-  brigade: 1
+  line: N03
+  brigade: 3
+  locationRefreshRate: 10000
   
 api:
   um:
     url: https://api.um.warszawa.pl/api
+    resourceId: f2e5503e-927d-4ad3-9500-4ab9e55deb59
+    apiKey: 6c954401-0520-465e-9617-a28024c2a48f
+
+feign:
+  client:
+    config:
+      api-um:
+        loggerLevel: full
+
+logging:
+  level:
+    io.wsd.busenforcer.busapp: DEBUG

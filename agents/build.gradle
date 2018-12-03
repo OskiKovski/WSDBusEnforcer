@@ -11,12 +11,14 @@ buildscript {
 }
 
 plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.14'
     id 'java'
+    id 'idea'
     id 'org.jetbrains.kotlin.jvm' version "1.3.10"
     id 'maven'
 }
 
-task runJadePlatform(type: JavaExec){
+task runJadePlatform(type: JavaExec) {
     args = ['-conf', 'src/main/resources/jade-main-container.properties']
     description = "Starts JADE main container and initialize platform."
     main = "jade.Boot"
@@ -31,14 +33,10 @@ task runJadeAgents(type: JavaExec) {
 }
 
 repositories {
+    mavenCentral()
     mavenLocal()
-    maven {
-        url = 'http://jade.tilab.com/maven/'
-    }
-
-    maven {
-        url = 'http://repo.maven.apache.org/maven2'
-    }
+    maven { url = 'http://jade.tilab.com/maven/' }
+    maven { url = 'http://repo.maven.apache.org/maven2' }
 }
 
 dependencies {
@@ -47,6 +45,11 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.7.25'
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10'
     testCompile 'org.jetbrains.kotlin:kotlin-test:1.3.10'
+}
+
+lombok {
+    version = '1.18.4'
+    sha256 = ""
 }
 
 group = 'io.wsd.busenforcer'

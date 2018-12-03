@@ -6,6 +6,8 @@
 </head>
 <body>
     <h1 th:inline="text">[[${appName}]] Console</h1>
+    <h2 th:inline="text">Line: [[${line}]]</h2>
+    <h2 th:inline="text">Brigade: [[${brigade}]]</h2>
     <form action="/bus/api/raiseEvent" method="post">
         <input type="submit" value="Raise event" />
     </form>

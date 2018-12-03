@@ -10,9 +10,11 @@ buildscript {
 	}
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+plugins {
+	id 'io.franzbecker.gradle-lombok' version '1.14'
+	id 'java'
+	id 'idea'
+}
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -27,13 +29,15 @@ repositories {
 	maven { url "http://jade.tilab.com/maven/" }
 }
 
+ext['springCloudVersion'] = 'Greenwich.M3'
+
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-    implementation('io.github.openfeign:feign-core:9.5.1')
-    implementation('io.github.openfeign:feign-gson:9.5.1')
-	implementation('com.tilab.jade:jade:4.5.0')
+    implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
+    implementation('com.tilab.jade:jade:4.5.0')
+	implementation('com.google.code.gson:gson:2.8.5')
     implementation('io.wsd.busenforcer:agents:0.0.1-SNAPSHOT') {
 		exclude group: 'org.slf4j', module: 'slf4j-simple'
     }// why I need snapshot version specified
@@ -41,4 +45,10 @@ dependencies {
 	runtimeOnly('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }

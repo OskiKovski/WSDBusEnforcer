@@ -1,7 +1,5 @@
 package io.wsd.busenforcer.busapp.api.rest;
 
-import io.wsd.busenforcer.busapp.service.BusSimulationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +13,17 @@ public class BusSimulationConsoleController {
     @Value("${spring.application.name}")
     String appName;
 
-    @Autowired
-    BusSimulationService busSimulationService;
+    @Value("${bus.line}")
+    private String line;
+
+    @Value("${bus.brigade}")
+    private String brigade;
 
     @GetMapping("/console")
     public String console(Model model) {
         model.addAttribute("appName", appName);
+        model.addAttribute("line", line);
+        model.addAttribute("brigade", brigade);
         return "console";
     }
 }

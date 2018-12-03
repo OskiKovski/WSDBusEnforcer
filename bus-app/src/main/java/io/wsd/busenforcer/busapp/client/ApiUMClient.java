@@ -1,46 +1,22 @@
 package io.wsd.busenforcer.busapp.client;
 
-import javax.validation.constraints.NotNull;
+import io.wsd.busenforcer.busapp.client.configuration.ApiUMConfiguration;
+import io.wsd.busenforcer.busapp.client.dto.LocationInfo;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-import feign.Feign;
-import feign.Param;
-import feign.RequestLine;
-import feign.gson.GsonDecoder;
-import io.wsd.busenforcer.busapp.model.LocationInfo;
-import lombok.Getter;
-import lombok.Setter;
+@FeignClient(name = "api-um", url = "${api.um.url}", configuration = ApiUMConfiguration.class)
+public interface ApiUMClient {
 
-@Service
-public class ApiUMClient {
-    
-    private final ApiUM apiUM;
-    
-    public ApiUMClient(ApiUMConfiguration config) {
-        this.apiUM = Feign.builder()
-                .decoder(new GsonDecoder())
-                .target(ApiUM.class, config.url);
-    }
-    
-    public LocationInfo getBusLocation() {
-        return null;
-    }
-    
-    private interface ApiUM {
-        @RequestLine("GET /action/busestrams_get/?resource_id={resource_id}&apikey={apikey}&type=1&line={line}&brigade={brigade}")
-        LocationInfo getBusLocation(@Param("resource_id") String resourceId, @Param("apikey") String apiKey, @Param("line") String line, @Param("brigade") String brigade);
-    }
+    @RequestMapping(method = RequestMethod.GET, value = "/action/busestrams_get/")
+    Optional<LocationInfo> getLocation(@RequestParam("resource_id") String resourceId,
+                                       @RequestParam("apikey") String apiKey,
+                                       @RequestParam("type") String type,
+                                       @RequestParam("line") String line,
+                                       @RequestParam("brigade") String brigade);
 
-    @Component
-    @Getter
-    @Setter
-    @ConfigurationProperties(prefix = "api.um")
-    private static class ApiUMConfiguration {
-        
-        @NotNull
-        private String url;
-    }
 }

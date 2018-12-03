@@ -1,18 +1,16 @@
-package io.wsd.busenforcer.busapp.model;
+package io.wsd.busenforcer.busapp.client.dto;
 
-import java.util.Date;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class LocationInfo {
     private Double lat;
     private Double lon;
-    private Date date;
-    private String line;
+    private Date time;
+    private String lines;
     private String brigade;
 }

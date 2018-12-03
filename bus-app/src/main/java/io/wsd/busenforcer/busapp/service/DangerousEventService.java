@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BusSimulationService {
+public class DangerousEventService {
 
-    Logger logger = LoggerFactory.getLogger(BusSimulationService.class);
+    Logger logger = LoggerFactory.getLogger(DangerousEventService.class);
 
     @Autowired
     AgentRunner agentRunner;

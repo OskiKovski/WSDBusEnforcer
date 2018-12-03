@@ -1,6 +1,7 @@
 package io.wsd.busenforcer.agents.bus;
 
 import io.wsd.busenforcer.agents.bus.behaviours.ExampleKotlinBehaviour;
+import io.wsd.busenforcer.agents.bus.o2a.UpdateLocationO2A;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.ServiceException;
@@ -19,6 +20,9 @@ public class BusAgent extends Agent {
 
     private final Logger logger = LoggerFactory.getLogger(BusAgent.class);
 
+    private Double lat = null;
+    private Double lon = null;
+
     @Override
     public void setup() {
         logger.info("BusAgent started.");
@@ -29,32 +33,40 @@ public class BusAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             @Override
             public void action() {
-                String message = (String) getO2AObject();
-                if (message != null) {
+                Object obj = getO2AObject();
+                if (obj != null) {
                     logger.info("Serving external O2A communication");
-                    switch (message) {
-                        case O2A_RAISE_EVENT:
-                            this.getAgent().addBehaviour(new OneShotBehaviour(this.getAgent()) {
-                                @Override
-                                public void action() {
-                                    logger.info("Raising event on demand");
-                                    try {
-                                        TopicManagementHelper topicHelper = (TopicManagementHelper)
-                                                getHelper(TopicManagementHelper.SERVICE_NAME);
-                                        AID topic = topicHelper.createTopic("dangerous-events");
-                                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                                        msg.addReceiver(topic);
-                                        msg.setContent("Dangerous event");
-                                        send(msg);
-                                    } catch (ServiceException e) {
-                                        e.printStackTrace();
+                    if (obj instanceof UpdateLocationO2A) {
+                        UpdateLocationO2A o2a = (UpdateLocationO2A) obj;
+                        lat = o2a.getLat();
+                        lon = o2a.getLon();
+                        logger.info("Location updated.");
+                    } else if (obj instanceof String) {
+                        String message = (String) obj;
+                        switch (message) {
+                            case O2A_RAISE_EVENT:
+                                this.getAgent().addBehaviour(new OneShotBehaviour(this.getAgent()) {
+                                    @Override
+                                    public void action() {
+                                        logger.info("Raising event on demand");
+                                        try {
+                                            TopicManagementHelper topicHelper = (TopicManagementHelper)
+                                                    getHelper(TopicManagementHelper.SERVICE_NAME);
+                                            AID topic = topicHelper.createTopic("dangerous-events");
+                                            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                                            msg.addReceiver(topic);
+                                            msg.setContent("Dangerous event");
+                                            send(msg);
+                                        } catch (ServiceException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            });
-                            break;
+                                });
+                                break;
 
-                        default:
-                            logger.error("Unknown O2A message");
+                            default:
+                                logger.error("Unknown O2A message");
+                        }
                     }
                 } else {
                     block();
