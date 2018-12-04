@@ -44,14 +44,14 @@
     min-width: 400px;
 }
 
-.book-list-pos1 {
+.list-pos1 {
     background-color: darkgray;
     color: black;
     height: 15px;
     padding: 10px 5px ;
 }
 
-.book-list-pos2 {
+.list-pos2 {
     background-color: lightblue;
     color: black;
     height: 15px;

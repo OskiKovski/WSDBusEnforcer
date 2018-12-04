@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-class BookListPosition extends Component {
+class ListPosition extends Component {
 
     constructor(){
         super();
@@ -11,13 +11,13 @@ class BookListPosition extends Component {
     }
 
     determineStyle = () => {
-        return this.props.index % 2 ? 'book-list-pos1' : 'book-list-pos2';
+        return this.props.index % 2 ? 'list-pos1' : 'list-pos2';
     };
 
     entry = () => {
         return (
             <div>
-                <div className="book-list-pos-section1">
+                <div className="list-pos-section1">
                     <div>
                         <div>
                             <b>{this.props.name}</b>
@@ -37,5 +37,5 @@ class BookListPosition extends Component {
     }
 }
 
-export default BookListPosition;
+export default ListPosition;
 
