@@ -5,7 +5,10 @@ import MainView from "./component/mainview/MainView";
 class App extends Component {
     render() {
         return(
-            <MainView/>
+            <div>
+                <h1>Command Center</h1>
+                <MainView/>
+            </div>
         );
     }
 }
