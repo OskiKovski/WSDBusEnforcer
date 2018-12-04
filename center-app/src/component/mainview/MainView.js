@@ -21,12 +21,12 @@ class MainView extends Component {
         this.url = 'http://localhost:8080/api/center/getLists';
         this.fetchUpdate = this.fetchUpdate.bind(this);
         this.fetchUpdate();
-        setInterval(this.fetchUpdate, 2000);
+        setInterval(this.fetchUpdate, 5000);
     }
 
     setMock() {
         const data = {
-            buses: ['Autobus 523', 'Autobus 162'],
+            buses: ['Autobus 523', 'Autobus 162', 'Tramwaj 20'],
             policeCars: ['Komisarz Alex', 'W 11'],
         };
 
