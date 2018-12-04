@@ -7,10 +7,12 @@ class BookListView extends Component {
         super();
     }
 
-    render() {
-        const type = this.props.type;
+    componentWillMount() {
+        this.type = this.props.type;
+    }
 
-        if(type === 'BUS'){
+    determineContentByType = () => {
+        if(this.type === 'BUS'){
             return (
                 <div className="list-view">
                     <BookListPosition key={0} name={'Autobus 523'} index={0}/>
@@ -18,7 +20,7 @@ class BookListView extends Component {
                 </div>
             );
         }
-        else if(type === 'POLICE'){
+        else if(this.type === 'POLICE'){
             return (
                 <div className="list-view">
                     <BookListPosition key={0} name={'Wydzial ds. zabojstw'} index={0}/>
@@ -29,6 +31,28 @@ class BookListView extends Component {
         else {
             return <div />
         }
+    };
+
+    determineTitleByType = () => {
+        if(this.type === 'BUS'){
+            return 'Autobusy';
+        }
+        else if(this.type === 'POLICE'){
+            return 'Jednoski policji';
+        }
+        else {
+            return '';
+        }
+    };
+
+    render() {
+        return <div>
+            <div className="list-view-title">
+                {this.determineTitleByType()}
+            </div>
+
+            {this.determineContentByType()}
+        </div>
     }
 }
 

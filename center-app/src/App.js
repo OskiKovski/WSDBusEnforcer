@@ -6,7 +6,7 @@ class App extends Component {
     render() {
         return(
             <div>
-                <h1>Command Center</h1>
+                <h1 className="main-title">Command Center</h1>
                 <MainView/>
             </div>
         );
