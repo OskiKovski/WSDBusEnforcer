@@ -1,6 +1,5 @@
 package io.wsd.busenforcer.agents.bus;
 
-import io.wsd.busenforcer.agents.bus.behaviours.ExampleKotlinBehaviour;
 import io.wsd.busenforcer.agents.bus.o2a.UpdateLocationO2A;
 import jade.core.AID;
 import jade.core.Agent;
@@ -26,7 +25,6 @@ public class BusAgent extends Agent {
     @Override
     public void setup() {
         logger.info("BusAgent started.");
-        addBehaviour(new ExampleKotlinBehaviour(this));
 
         // Object To Agent Communication
         setEnabledO2ACommunication(true, 10);
