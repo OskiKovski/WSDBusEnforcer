@@ -1,0 +1,72 @@
+.header {
+    text-align: right;
+    background-color: #303030;
+    padding-bottom: 10px;
+    color: white;
+}
+
+.header-title {
+    text-align: center;
+    padding: 5px;
+}
+
+.menu {
+    background-color: lightgray;
+    color: white;
+}
+
+.display {
+    background-color: darkgray;
+    color: black;
+}
+
+.book-list-pos1 {
+    background-color: darkgray;
+    color: black;
+    height: 75px;
+    padding: 10px 5px;
+}
+
+.book-list-pos2 {
+    background-color: lightblue;
+    color: black;
+    height: 75px;
+    padding: 10px 5px;
+}
+
+.placeholder {
+    padding-right: 5px;
+}
+
+.custom-link-wrapper {
+    background-image: linear-gradient(#66ff99, #00cc00);
+    padding: 5px;
+}
+
+.custom-link {
+    color: black;
+    text-decoration: none;
+    font-size: large;
+    padding: 5px;
+    font-family: Verdana, "Times New Roman", Times, serif;
+}
+
+.book-list-pos-section1 {
+    width: 80%;
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.book-list-pos-section2 {
+    width: 20%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+
+.test {
+    min-height: 800px;
+}
