@@ -1,3 +1,6 @@
+server:
+  port: 9090
+
 spring:
   application:
     name: BusSimulation
@@ -12,9 +15,10 @@ spring:
 agent:
   conf: agent.properties
   
+  # TODO jkumor - this should be runtime configurable
 bus:
-  line: N03
-  brigade: 3
+  line: 509
+  brigade: 1
   locationRefreshRate: 10000
   
 api:

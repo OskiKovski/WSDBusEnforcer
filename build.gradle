@@ -6,9 +6,12 @@ plugins {
 group = 'io.wsd.busenforcer'
 version = '0.0.1-SNAPSHOT'
 
-subprojects {    
+subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
     
     repositories {
         mavenCentral()

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class LocationInfo {
+public class LocationInfoDTO {
     private Double lat;
     private Double lon;
     private Date time;

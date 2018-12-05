@@ -1,4 +1,4 @@
-package io.wsd.busenforcer.busapp.api.rest;
+package io.wsd.busenforcer.busapp.api.console;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

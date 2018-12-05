@@ -1,7 +1,7 @@
 package io.wsd.busenforcer.busapp.service;
 
 import io.wsd.busenforcer.busapp.client.ApiUMClient;
-import io.wsd.busenforcer.busapp.client.dto.LocationInfo;
+import io.wsd.busenforcer.busapp.client.dto.LocationInfoDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class LocationService {
 
     public void updateLocation() {
         logger.info("Updating location.");
-        Optional<LocationInfo> location = apiUmClient.getLocation(apiConfig.resource_id, apiConfig.apiKey,
+        Optional<LocationInfoDTO> location = apiUmClient.getLocation(apiConfig.resource_id, apiConfig.apiKey,
                 BUS_TYPE, busConfig.line, busConfig.brigade);
         if (location.isPresent()) {
             agentRunnerService.updateLocation(location.get().getLat(), location.get().getLon());

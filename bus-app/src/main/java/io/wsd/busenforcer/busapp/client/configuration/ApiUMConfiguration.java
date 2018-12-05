@@ -9,7 +9,7 @@ import feign.FeignException;
 import feign.Response;
 import feign.codec.DecodeException;
 import feign.codec.Decoder;
-import io.wsd.busenforcer.busapp.client.dto.LocationInfo;
+import io.wsd.busenforcer.busapp.client.dto.LocationInfoDTO;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
@@ -25,10 +25,10 @@ public class ApiUMConfiguration {
             @Override
             public Object decode(Response response, Type type) throws IOException, DecodeException, FeignException {
                 JsonObject jsonObject = new Gson().fromJson(response.body().asReader(), JsonObject.class);
-                Type listType = new TypeToken<ArrayList<LocationInfo>>() {
+                Type listType = new TypeToken<ArrayList<LocationInfoDTO>>() {
                 }.getType();
                 // @formatter:off
-                List<LocationInfo> resultList = new GsonBuilder()
+                List<LocationInfoDTO> resultList = new GsonBuilder()
                         .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                         .create()
                         .fromJson(jsonObject.get("result"), listType);

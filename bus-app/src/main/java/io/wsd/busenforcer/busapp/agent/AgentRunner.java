@@ -33,6 +33,7 @@ public class AgentRunner {
         Profile profile = new ProfileImpl(Properties.toLeapProperties(PropertiesLoaderUtils.loadProperties(resource)));
         AgentContainer container = Runtime.instance().createAgentContainer(profile);
         try {
+            // TODO: 05.12.2018 jkumor - name agent
             agent = container
                     .createNewAgent("inprocess-bus-agent", BusAgent.class.getName(), new Object[]{});
             agent.start();

@@ -6,7 +6,10 @@ plugins {
 
 group = 'io.wsd.busenforcer'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+
+ext {
+    springCloudVersion = 'Greenwich.M3'
+}
 
 repositories {
 	mavenCentral()
@@ -14,12 +17,14 @@ repositories {
 	maven { url "http://jade.tilab.com/maven/" }
 }
 
-ext {
-    springCloudVersion = 'Greenwich.M3'
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
@@ -28,9 +33,8 @@ dependencies {
     implementation(project(':agents')) {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }
-	runtimeOnly('org.springframework.boot:spring-boot-devtools')
-	runtimeOnly('com.h2database:h2')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    developmentOnly('org.springframework.boot:spring-boot-devtools')
 }
 
 dependencyManagement {
