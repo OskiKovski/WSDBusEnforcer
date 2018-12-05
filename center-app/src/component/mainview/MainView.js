@@ -28,29 +28,29 @@ class MainView extends Component {
         const data = {
             buses: [
                 {
-                    id: '1',
+                    id: '523',
                     name: 'Autobus 523',
                     position: [52.253354, 20.996054]
                 },
                 {
-                    id: '2',
+                    id: '162',
                     name: 'Autobus 162',
                     position: [52.252106, 20.998135]
                 },
                 {
-                    id: '3',
+                    id: '20',
                     name: 'Tramwaj 20',
                     position: [52.253866, 21.000045]
                 }
             ],
             policeCars: [
                 {
-                    id: '4',
-                    name: 'Komisarz Alex',
+                    id: '007',
+                    name: '007',
                     position: [52.255094, 20.997438]
                 },
                 {
-                    id: '5',
+                    id: 'W11',
                     name: 'W 11',
                     position: [52.254923, 20.995979]
                 }

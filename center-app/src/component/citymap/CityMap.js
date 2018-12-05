@@ -1,13 +1,26 @@
 import React, {Component} from 'react';
 import {Map, Marker, TileLayer} from 'react-leaflet';
-import {policeIcon} from '../icon/policeIcon.js';
-import {busIcon} from "../icon/busIcon";
+import L from "leaflet";
 
 class CityMap extends Component {
+
+    constructor(){
+        super();
+
+        this.stamenTonerTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        this.stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+        this.mapCenter = [52.253682, 20.997803];
+        this.zoomLevel = 12;
+    }
 
     getPoliceMarkers = () => {
         return (
             this.props.data.policeCars.map(elem => {
+                const policeIcon = new L.DivIcon({
+                    iconSize: new L.Point(0, 0),
+                    html: '<span style="color:white;font-size:40px;background:blue">' + elem.id + '</span>'
+                });
+
                 return <Marker
                     key={elem.id}
                     position={elem.position}
@@ -20,6 +33,11 @@ class CityMap extends Component {
     getBusMarkers = () => {
         return (
             this.props.data.buses.map(elem => {
+                const busIcon = new L.DivIcon({
+                    iconSize: new L.Point(0, 0),
+                    html: '<span style="color:black;font-size:40px;background:orange">' + elem.id + '</span>'
+                });
+
                 return <Marker
                     key={elem.id}
                     position={elem.position}
@@ -37,20 +55,15 @@ class CityMap extends Component {
     };
 
     render() {
-        const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
-        const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-        const mapCenter = [52.253682, 20.997803];
-        const zoomLevel = 12;
-
         return (
             <div>
                 <Map
-                    center={mapCenter}
-                    zoom={zoomLevel}
+                    center={this.mapCenter}
+                    zoom={this.zoomLevel}
                 >
                     <TileLayer
-                        attribution={stamenTonerAttr}
-                        url={stamenTonerTiles}
+                        attribution={this.stamenTonerAttr}
+                        url={this.stamenTonerTiles}
                     />
                     {this.getMarkers()}
                 </Map>
