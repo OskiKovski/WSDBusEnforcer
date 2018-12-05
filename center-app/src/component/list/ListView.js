@@ -10,9 +10,9 @@ class ListView extends Component {
     determineListContent = () => {
         let j = 0;
         return (
-            this.props.data.map(i => {
+            this.props.data.map(elem => {
                 j++;
-                return <ListPosition key={j} name={i} index={j}/>
+                return <ListPosition key={elem.id} name={elem.name} index={j}/>
             })
         );
     };
