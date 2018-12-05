@@ -12,9 +12,7 @@ ext {
 }
 
 repositories {
-	mavenCentral()
     maven { url "https://repo.spring.io/milestone" }
-	maven { url "http://jade.tilab.com/maven/" }
 }
 
 configurations {

@@ -25,7 +25,7 @@ public class O2ABehaviour<T extends Agent> extends CyclicBehaviour {
             O2ACommand<T> command = (O2ACommand<T>) obj;
             logger.info("O2A command received.");
             command.execute(agent);
-            logger.info("Command execution finished.");
+            logger.info("O2A command execution finished.");
         } else {
             block();
         }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.wsd.busenforcer.busapp.api.rest.dto.BusInfoDTO;
+import io.wsd.busenforcer.busapp.api.rest.dto.BrigadeInfoDTO;
 import io.wsd.busenforcer.busapp.service.AgentRunnerService;
 
 @RestController
@@ -22,8 +22,8 @@ public class BusSimulationApiController {
         return agentRunnerService.raiseEvent();
     }
 
-    @PostMapping(value = "/updateBusInfo", consumes = "application/json")
-    public String setBusInfo(@RequestBody BusInfoDTO busInfo) {
-        return agentRunnerService.updateBusInfo(busInfo.getLine(), busInfo.getBrigade());
+    @PostMapping(value = "/updateBrigadeInfo", consumes = "application/json")
+    public String updateBrigadeInfo(@RequestBody BrigadeInfoDTO dto) {
+        return agentRunnerService.updateBrigadeInfo(dto.getLine(), dto.getBrigade());
     }
 }

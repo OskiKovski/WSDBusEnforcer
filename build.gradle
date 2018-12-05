@@ -15,6 +15,7 @@ subprojects {
     
     repositories {
         mavenCentral()
+        jcenter()
         maven { url = 'http://jade.tilab.com/maven/' }
         maven { url = 'http://repo.maven.apache.org/maven2' }
     }

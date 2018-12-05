@@ -17,9 +17,10 @@ agent:
   
   # TODO jkumor - this should be runtime configurable
 bus:
+  number: 1001
   line: 509
   brigade: 1
-  locationRefreshRate: 10000
+  locationRefreshRate: 15000
   
 api:
   um:
@@ -31,7 +32,7 @@ feign:
   client:
     config:
       api-um:
-        loggerLevel: full
+        loggerLevel: basic
 
 logging:
   level:

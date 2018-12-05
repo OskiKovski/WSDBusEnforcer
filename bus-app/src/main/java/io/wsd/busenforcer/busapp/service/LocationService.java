@@ -1,5 +1,6 @@
 package io.wsd.busenforcer.busapp.service;
 
+import io.wsd.busenforcer.agents.bus.model.BusState;
 import io.wsd.busenforcer.busapp.client.ApiUMClient;
 import io.wsd.busenforcer.busapp.client.dto.LocationInfoDTO;
 import lombok.Getter;
@@ -18,8 +19,8 @@ import java.util.Optional;
 public class LocationService {
 
     private static final String BUS_TYPE = "1";
+
     private Logger logger = LoggerFactory.getLogger(LocationService.class);
-    private final BusConfig busConfig;
     private final ApiUMConfiguration apiConfig;
 
     @Autowired
@@ -28,15 +29,15 @@ public class LocationService {
     @Autowired
     private AgentRunnerService agentRunnerService;
 
-    public LocationService(ApiUMConfiguration apiConfig, BusConfig busConfig) {
+    public LocationService(ApiUMConfiguration apiConfig) {
         this.apiConfig = apiConfig;
-        this.busConfig = busConfig;
     }
 
     public void updateLocation() {
-        logger.info("Updating location.");
+        logger.info("Updating location via UM api.");
+        BusState busState = agentRunnerService.getBusState();
         Optional<LocationInfoDTO> location = apiUmClient.getLocation(apiConfig.resource_id, apiConfig.apiKey,
-                BUS_TYPE, busConfig.line, busConfig.brigade);
+                BUS_TYPE, busState.getLine(), busState.getBrigade());
         if (location.isPresent()) {
             agentRunnerService.updateLocation(location.get().getLat(), location.get().getLon());
             logger.info("Location updated: " + location.get() + ".");
@@ -58,17 +59,5 @@ public class LocationService {
         private String resource_id;
         @NotNull
         private String apiKey;
-    }
-
-    @Component
-    @Getter
-    @Setter
-    @ConfigurationProperties(prefix = "bus")
-    private static class BusConfig {
-
-        @NotNull
-        private String line;
-        @NotNull
-        private String brigade;
     }
 }

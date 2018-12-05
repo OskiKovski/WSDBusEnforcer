@@ -3,7 +3,7 @@ package io.wsd.busenforcer.agents.bus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.wsd.busenforcer.agents.bus.model.BusInfo;
+import io.wsd.busenforcer.agents.bus.model.BusState;
 import io.wsd.busenforcer.agents.common.model.Location;
 import io.wsd.busenforcer.agents.common.o2a.O2ABehaviour;
 import jade.core.Agent;
@@ -14,9 +14,11 @@ public class BusAgent extends Agent {
 
     private final Logger logger = LoggerFactory.getLogger(BusAgent.class);
 
-    private Location location;
+    private BusState busState;
 
-    private BusInfo busInfo;
+    public BusAgent(BusState busState) {
+        this.busState = busState;
+    }
 
     @Override
     public void setup() {
@@ -30,19 +32,7 @@ public class BusAgent extends Agent {
         setEnabledO2ACommunication(false, 0);
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public BusInfo getBusInfo() {
-        return busInfo;
-    }
-
-    public void setBusInfo(BusInfo busInfo) {
-        this.busInfo = busInfo;
+    public BusState getBusState() {
+        return busState;
     }
 }

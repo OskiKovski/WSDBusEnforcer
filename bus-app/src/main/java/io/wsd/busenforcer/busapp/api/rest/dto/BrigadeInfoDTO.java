@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class BusInfoDTO {
-    String line;
-    String brigade;
+public class BrigadeInfoDTO {
+    final String line;
+    final String brigade;
 }

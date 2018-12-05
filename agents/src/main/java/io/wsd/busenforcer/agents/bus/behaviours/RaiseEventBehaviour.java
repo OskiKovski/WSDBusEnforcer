@@ -29,7 +29,7 @@ public class RaiseEventBehaviour extends OneShotBehaviour {
             AID topic = topicHelper.createTopic("dangerous-events");
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.addReceiver(topic);
-            msg.setContent("Dangerous event at: " + busAgent.getLocation());
+            msg.setContent("Dangerous event at: " + busAgent.getBusState().getLocation());
             busAgent.send(msg);
         } catch (ServiceException e) {
             e.printStackTrace();
