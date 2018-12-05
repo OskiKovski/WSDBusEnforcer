@@ -1,43 +1,42 @@
-buildscript {
-	ext {
-		springBootVersion = '2.1.0.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+plugins {
+    id "io.franzbecker.gradle-lombok" version "1.14"
+    id "org.springframework.boot" version "2.1.0.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 group = 'io.wsd.busenforcer'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+
+ext {
+    springCloudVersion = 'Greenwich.M3'
+}
 
 repositories {
-	mavenCentral()
-    mavenLocal()
-	maven {
-		url "http://jade.tilab.com/maven/"
-	}
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	implementation('com.tilab.jade:jade:4.5.0')
-    implementation('io.wsd.busenforcer:agents:0.0.1-SNAPSHOT') {
-		exclude group: 'org.slf4j', module: 'slf4j-simple'
-    }// why I need snapshot version specified
-	runtimeOnly('org.springframework.boot:spring-boot-devtools')
-	runtimeOnly('com.h2database:h2')
-	compileOnly('org.projectlombok:lombok')
+    implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
+    implementation('com.tilab.jade:jade:4.5.0')
+	implementation('com.google.code.gson:gson:2.8.5')
+    implementation(project(':agents')) {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    developmentOnly('org.springframework.boot:spring-boot-devtools')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }

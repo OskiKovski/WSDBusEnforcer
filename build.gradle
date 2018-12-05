@@ -1,0 +1,22 @@
+plugins {
+    id 'base'
+    id 'idea'
+}
+
+group = 'io.wsd.busenforcer'
+version = '0.0.1-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url = 'http://jade.tilab.com/maven/' }
+        maven { url = 'http://repo.maven.apache.org/maven2' }
+    }
+}
