@@ -4,6 +4,7 @@ import BusListView from "../list/BusListView";
 import PoliceListView from "../list/PoliceListView";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import {url} from "../Constants.js"
 
 class MainView extends Component {
 
@@ -18,7 +19,6 @@ class MainView extends Component {
 
         this.setMock();
 
-        this.url = 'http://localhost:8080/api/center/getLists';
         this.fetchUpdate = this.fetchUpdate.bind(this);
         this.fetchUpdate();
         setInterval(this.fetchUpdate, 5000);
@@ -57,11 +57,11 @@ class MainView extends Component {
             ]
         };
 
-        new MockAdapter(axios).onGet(this.url).reply(200, data);
+        new MockAdapter(axios).onGet(url).reply(200, data);
     }
 
     async fetchUpdate() {
-        axios.get(this.url)
+        axios.get(url)
             .then(response => {
                 this.setState({
                     response: response.data
