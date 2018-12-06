@@ -25,6 +25,7 @@ configurations {
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('org.springframework.boot:spring-boot-starter-web')
+    //implementation('org.springframework.cloud:spring-cloud-starter-security')
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
     implementation('com.tilab.jade:jade:4.5.0')
 	implementation('com.google.code.gson:gson:2.8.5')

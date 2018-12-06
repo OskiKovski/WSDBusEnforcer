@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'http://localhost:8080/api/center/getLists'
+    url: 'http://localhost:9091/center/api/getLists'
 };

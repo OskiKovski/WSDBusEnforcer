@@ -2,3 +2,4 @@ rootProject.name = 'parent'
 
 include 'agents' 
 include 'bus-app'
+include 'center-app'

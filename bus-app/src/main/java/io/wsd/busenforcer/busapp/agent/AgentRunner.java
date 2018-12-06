@@ -3,6 +3,7 @@ package io.wsd.busenforcer.busapp.agent;
 import io.wsd.busenforcer.agents.bus.BusAgent;
 import io.wsd.busenforcer.agents.bus.model.BusState;
 import io.wsd.busenforcer.agents.common.model.Location;
+import io.wsd.busenforcer.busapp.events.BusAgentInitializedEvent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -10,8 +11,10 @@ import jade.util.leap.Properties;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -33,6 +36,9 @@ public class AgentRunner {
     @Value("${bus.brigade}")
     private String brigade;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
     private AgentController agentController;
 
     private BusAgent busAgent;
@@ -47,6 +53,7 @@ public class AgentRunner {
             busAgent = new BusAgent(initialBusState);
             agentController = container.acceptNewAgent("explicit-bus-agent", busAgent);
             agentController.start();
+            applicationEventPublisher.publishEvent(new BusAgentInitializedEvent(this));
         } catch (StaleProxyException e) {
             e.printStackTrace();
         }

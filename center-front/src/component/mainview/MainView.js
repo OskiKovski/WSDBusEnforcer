@@ -17,7 +17,7 @@ class MainView extends Component {
             }
         };
 
-        this.setMock();
+        //this.setMock();
 
         this.fetchUpdate = this.fetchUpdate.bind(this);
         this.fetchUpdate();

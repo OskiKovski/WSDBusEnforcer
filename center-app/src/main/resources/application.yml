@@ -1,0 +1,6 @@
+server:
+  port: 9091
+
+cors:
+  frontend:
+    url: http://localhost:3000
