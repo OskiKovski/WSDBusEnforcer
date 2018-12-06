@@ -6,8 +6,8 @@ agents/.idea
 agents/.gradle
 agents/build
 
-center-app/node_modules
-center-app/build
+center-front/node_modules
+center-front/build
 
 
 # Gradle and Maven with auto-import
