@@ -27,7 +27,7 @@ public class LocationService {
     private ApiUMClient apiUmClient;
 
     @Autowired
-    private AgentRunnerService agentRunnerService;
+    private AgentService agentService;
 
     public LocationService(ApiUMConfiguration apiConfig) {
         this.apiConfig = apiConfig;
@@ -35,15 +35,12 @@ public class LocationService {
 
     public void updateLocation() {
         logger.info("Updating location via UM api.");
-        BusState busState = agentRunnerService.getBusState();
+        BusState busState = agentService.getBusState();
         Optional<LocationInfoDTO> location = apiUmClient.getLocation(apiConfig.resource_id, apiConfig.apiKey,
                 BUS_TYPE, busState.getLine(), busState.getBrigade());
-        if (location.isPresent()) {
-            agentRunnerService.updateLocation(location.get().getLat(), location.get().getLon());
-            logger.info("Location updated: " + location.get() + ".");
-        } else {
-            logger.warn("Failed to update location.");
-        }
+        location.ifPresent(l -> logger.info(l.toString()));
+        String status = location.map(l -> agentService.updateLocation(l.getLat(), l.getLon())).orElse("Fail!");
+        logger.info("Location update: " + status);
     }
 
 

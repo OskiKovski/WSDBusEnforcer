@@ -16,6 +16,11 @@ ext['springCloudVersion'] = 'Greenwich.M3'
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	//implementation('org.springframework.cloud:spring-cloud-starter-security')
+    implementation('com.tilab.jade:jade:4.5.0')
+    implementation('org.apache.commons:commons-lang3:3.8.1')
+	implementation(project(':agents')) {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+	}
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

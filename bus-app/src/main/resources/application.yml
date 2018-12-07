@@ -14,8 +14,7 @@ spring:
 
 agent:
   conf: agent.properties
-  
-  # TODO jkumor - this should be runtime configurable
+
 bus:
   number: 1001
   line: 509

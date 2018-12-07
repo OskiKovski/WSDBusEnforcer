@@ -1,7 +1,7 @@
 package io.wsd.busenforcer.busapp.api.console;
 
 import io.wsd.busenforcer.agents.bus.model.BusState;
-import io.wsd.busenforcer.busapp.service.AgentRunnerService;
+import io.wsd.busenforcer.busapp.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BusSimulationConsoleController {
 
     @Autowired
-    AgentRunnerService agentRunnerService;
+    AgentService agentService;
 
     @Value("${bus.number}")
     String number;
@@ -24,7 +24,7 @@ public class BusSimulationConsoleController {
     @GetMapping("/console")
     public String console(Model model) {
         model.addAttribute("number", number);
-        BusState busState = agentRunnerService.getBusState();
+        BusState busState = agentService.getBusState();
         model.addAttribute("line", busState.getLine());
         model.addAttribute("brigade", busState.getBrigade());
         model.addAttribute("lat", busState.getLocation().getLat());

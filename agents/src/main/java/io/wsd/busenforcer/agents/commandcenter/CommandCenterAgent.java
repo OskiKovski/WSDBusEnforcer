@@ -1,32 +1,54 @@
 package io.wsd.busenforcer.agents.commandcenter;
 
-import io.wsd.busenforcer.agents.AgentException;
-import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.wsd.busenforcer.agents.bus.model.BusState;
+import io.wsd.busenforcer.agents.commandcenter.model.CommandCenterState;
+import io.wsd.busenforcer.agents.common.BaseAgent;
+import jade.core.AID;
+import jade.core.ServiceException;
+import jade.core.behaviours.CyclicBehaviour;
+import jade.core.messaging.TopicManagementHelper;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 
-public class CommandCenterAgent extends Agent {
+import java.io.Serializable;
+
+public class CommandCenterAgent extends BaseAgent<CommandCenterState> {
     static final long serialVersionUID = 1L;
 
-    private final Logger logger = LoggerFactory.getLogger(CommandCenterAgent.class);
+    public CommandCenterAgent(CommandCenterState model) {
+        super(model);
+    }
 
     @Override
     public void setup() {
-        logger.info("CommandCenterAgent started.");
-        DFAgentDescription dfd = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("events-board");
-        sd.setName("Command Center Dangerous Events Board");
-        dfd.addServices(sd);
+        logger.info("Started.");
         try {
-            DFService.register(this, dfd);
-        } catch (FIPAException e) {
-            logger.error(e.getMessage());
-            throw new AgentException(e);
+            TopicManagementHelper topicHelper = (TopicManagementHelper)
+                    getHelper(TopicManagementHelper.SERVICE_NAME);
+            AID topic = topicHelper.createTopic("bus-status");
+            topicHelper.register(topic);
+            final MessageTemplate template = MessageTemplate.MatchTopic(topic);
+            addBehaviour(new CyclicBehaviour(this) {
+                public void action() {
+                    ACLMessage msg = myAgent.receive(template);
+                    if (msg != null) {
+                        try {
+                            Serializable contentObject = msg.getContentObject();
+                            logger.info("Recieved " + contentObject);
+                            if(contentObject instanceof BusState) {
+                                model.getBusStates().put(msg.getSender().getName(), (BusState) contentObject);
+                            }
+                        } catch (UnreadableException e) {
+                            logger.error("Error reading bus status: ", e);
+                        }
+                    } else {
+                        block();
+                    }
+                }
+            });
+        } catch (ServiceException e) {
+            logger.error("Error: ", e);
         }
     }
 

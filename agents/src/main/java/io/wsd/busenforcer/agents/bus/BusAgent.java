@@ -1,5 +1,11 @@
 package io.wsd.busenforcer.agents.bus;
 
+import io.wsd.busenforcer.agents.bus.behaviours.PublishBusStatusBehaviour;
+import io.wsd.busenforcer.agents.common.BaseAgent;
+import jade.core.AID;
+import jade.core.behaviours.TickerBehaviour;
+import jade.core.messaging.TopicManagementHelper;
+import jade.lang.acl.ACLMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,16 +14,12 @@ import io.wsd.busenforcer.agents.common.model.Location;
 import io.wsd.busenforcer.agents.common.o2a.O2ABehaviour;
 import jade.core.Agent;
 
-public class BusAgent extends Agent {
+public class BusAgent extends BaseAgent<BusState> {
 
     static final long serialVersionUID = 1L;
 
-    private final Logger logger = LoggerFactory.getLogger(BusAgent.class);
-
-    private BusState busState;
-
-    public BusAgent(BusState busState) {
-        this.busState = busState;
+    public BusAgent(BusState model) {
+        super(model);
     }
 
     @Override
@@ -25,6 +27,7 @@ public class BusAgent extends Agent {
         logger.info("BusAgent started.");
         setEnabledO2ACommunication(true, 10);
         addBehaviour(new O2ABehaviour<>(this));
+        addBehaviour(new PublishBusStatusBehaviour(this));
     }
 
     @Override
@@ -33,6 +36,6 @@ public class BusAgent extends Agent {
     }
 
     public BusState getBusState() {
-        return busState;
+        return model;
     }
 }

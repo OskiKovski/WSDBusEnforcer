@@ -13,6 +13,7 @@ import jade.lang.acl.ACLMessage;
 public class RaiseEventBehaviour extends OneShotBehaviour {
 
     private final Logger logger = LoggerFactory.getLogger(RaiseEventBehaviour.class);
+
     private final BusAgent busAgent;
 
     public RaiseEventBehaviour(BusAgent busAgent) {
