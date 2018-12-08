@@ -26,7 +26,7 @@ class CityMapMarker extends Component {
 		let iconClassName = "leaflet-div-icon";
 		const labelClassNames = {
 			bus: "bus-label",
-			policeCar: "police-car-label"
+			policeUnit: "police-unit-label"
 		};
 		let labelClassName = labelClassNames[this.props.type];
 		if (this.props.active) {

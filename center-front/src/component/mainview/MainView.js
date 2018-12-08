@@ -12,7 +12,7 @@ class MainView extends Component {
         super();
         this.state = {
 			buses: [],
-			policeCars: [],
+			policeUnits: [],
 			hovered: null
 		};
 
@@ -29,29 +29,29 @@ class MainView extends Component {
                 {
                     id: '523',
                     name: 'Autobus 523',
-                    position: [52.253354, 20.996054]
+                    position: {lat: 52.253354, lon: 20.996054}
                 },
                 {
                     id: '162',
                     name: 'Autobus 162',
-                    position: [52.252106, 20.998135]
+                    position: {lat:52.252106, lon:  20.998135}
                 },
                 {
                     id: '20',
                     name: 'Tramwaj 20',
-                    position: [52.253866, 21.000045]
+                    position: {lat:52.253866, lon:  21.000045}
                 }
             ],
-            policeCars: [
+            policeUnits: [
                 {
                     id: '007',
                     name: '007',
-                    position: [52.255094, 20.997438]
+                    position: {lat:52.255094, lon:  20.997438}
                 },
                 {
                     id: 'W11',
                     name: 'W 11',
-                    position: [52.254923, 20.995979]
+                    position: {lat:52.254923, lon:  20.995979}
                 }
             ]
         };
@@ -68,8 +68,7 @@ class MainView extends Component {
 	
 	createState(response) {
 		let state = {
-			buses: response.data.buses,
-			policeCars: response.data.policeCars,
+			...response.data,
 			hovered: this.state.hovered
 			
 		};
@@ -96,7 +95,7 @@ class MainView extends Component {
 							<BusListView type={'BUS'} data={this.state.buses} hovered={this.state.hovered} hoverHandler={this.hoverHandler}/>
 						</div>
 						<div className="col-md-6">
-							<PoliceListView type={'POLICE'} data={this.state.policeCars} hovered={this.state.hovered} hoverHandler={this.hoverHandler}/>
+							<PoliceListView type={'POLICE'} data={this.state.policeUnits} hovered={this.state.hovered} hoverHandler={this.hoverHandler}/>
 						</div>
 					</div>
 				</div>

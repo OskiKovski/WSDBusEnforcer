@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class ListsResultDTO {
     private final List<BusDTO> buses;
-    private final List<PoliceCarDTO> policeCars;
+    private final List<PoliceUnitDTO> policeUnits;
 }

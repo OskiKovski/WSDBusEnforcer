@@ -1,14 +1,13 @@
 package io.wsd.busenforcer.agents.bus.behaviours;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.wsd.busenforcer.agents.bus.BusAgent;
 import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.messaging.TopicManagementHelper;
 import jade.lang.acl.ACLMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RaiseEventBehaviour extends OneShotBehaviour {
 

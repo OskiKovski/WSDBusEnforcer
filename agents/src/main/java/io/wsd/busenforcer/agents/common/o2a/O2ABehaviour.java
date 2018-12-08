@@ -1,10 +1,9 @@
 package io.wsd.busenforcer.agents.common.o2a;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class O2ABehaviour<T extends Agent> extends CyclicBehaviour {
     static final long serialVersionUID = 1L;

@@ -1,28 +1,28 @@
-package io.wsd.busenforcer.busapp.agent;
+package io.wsd.busenforcer.agents.bus.integration.spring;
 
 import io.wsd.busenforcer.agents.bus.BusAgent;
 import io.wsd.busenforcer.agents.bus.model.BusState;
 import io.wsd.busenforcer.agents.common.integration.spring.SpringAgentRunner;
 import io.wsd.busenforcer.agents.common.model.Location;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-// TODO: 06.12.2018 jkumor - probably should be in agents project as integration package
 @Component
 public class BusAgentRunner extends SpringAgentRunner<BusAgent> {
 
-    @Value("${bus.number}")
+    @Value("${agent.bus.number}")
     private String number;
 
-    @Value("${bus.line}")
+    @Value("${agent.bus.line}")
     private String line;
 
-    @Value("${bus.brigade}")
+    @Value("${agent.bus.brigade}")
     private String brigade;
 
     @Override
     protected String buildAgentNickname() {
-        return "bus-agent-" + number;
+        return "bus-" + number + "-agent";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BusAgentRunner extends SpringAgentRunner<BusAgent> {
         return new BusAgent(initialBusState);
     }
 
-    public BusState viewBusState() {
-        return agent.getBusState().toBuilder().build();
+    public BusState viewState() {
+        return SerializationUtils.clone(agent.getBusState());
     }
 }

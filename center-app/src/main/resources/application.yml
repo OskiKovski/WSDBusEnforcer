@@ -1,9 +1,6 @@
 server:
   port: 9091
 
-agent:
-  conf: agent.properties
-
 cors:
   frontend:
     url: http://localhost:3000

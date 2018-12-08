@@ -13,13 +13,13 @@ spring:
       preffered-json-mapper: gson
 
 agent:
-  conf: agent.properties
+  bus:
+    number: 1001
+    line: 509
+    brigade: 1
 
-bus:
-  number: 1001
-  line: 509
-  brigade: 1
-  locationRefreshRate: 15000
+location:
+  refreshRate: 5000
   
 api:
   um:

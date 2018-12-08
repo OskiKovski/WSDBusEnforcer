@@ -1,11 +1,13 @@
 package io.wsd.busenforcer.centerapp.service;
 
 import io.wsd.busenforcer.agents.bus.model.BusState;
-import io.wsd.busenforcer.agents.commandcenter.model.CommandCenterState;
-import io.wsd.busenforcer.centerapp.agent.CommandCenterAgentRunner;
+import io.wsd.busenforcer.agents.commandcenter.integration.spring.CommandCenterAgentRunner;
+import io.wsd.busenforcer.agents.common.model.Location;
+import io.wsd.busenforcer.agents.police.model.PoliceState;
 import io.wsd.busenforcer.centerapp.api.rest.dto.BusDTO;
 import io.wsd.busenforcer.centerapp.api.rest.dto.ListsResultDTO;
 import io.wsd.busenforcer.centerapp.api.rest.dto.LocationDTO;
+import io.wsd.busenforcer.centerapp.api.rest.dto.PoliceUnitDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -28,27 +30,36 @@ public class AgentService {
     }
 
     public ListsResultDTO getLists() {
-        CommandCenterState commandCenterState = commandCenterAgentRunner.viewState();
-        List<BusDTO> buses = commandCenterState.getBusStates().values().stream()
-                .sorted(Comparator.comparing(BusState::getLine))
-                .map(this::mapBusStateToBusDTO)
-                .collect(Collectors.toList());
-        return new ListsResultDTO(buses, Collections.emptyList());
+        return commandCenterAgentRunner.viewState()
+                .map(state -> {
+                    List<BusDTO> buses = state.getBusStates().values().stream()
+                            .sorted(Comparator.comparing(BusState::getLine, Comparator.nullsLast(Comparator.naturalOrder())))
+                            .map(this::mapBusStateToBusDTO)
+                            .collect(Collectors.toList());
+                    List<PoliceUnitDTO> policeUnits = state.getPoliceStates().values().stream()
+                            .sorted(Comparator.comparing(PoliceState::getId, Comparator.nullsLast(Comparator.naturalOrder())))
+                            .map(this::mapPoliceStateToPoliceUnitDTO)
+                            .collect(Collectors.toList());
+                    return new ListsResultDTO(buses, policeUnits);
+                })
+                .orElse(new ListsResultDTO(Collections.emptyList(), Collections.emptyList()));
+    }
+
+    private PoliceUnitDTO mapPoliceStateToPoliceUnitDTO(PoliceState s) {
+        String id = s.getId();
+        String name = "Jednostka " + s.getId();
+        LocationDTO position = getPosition(s.getLocation());
+        return new PoliceUnitDTO(id, name, position);
     }
 
     private BusDTO mapBusStateToBusDTO(BusState s) {
-        return new BusDTO(getId(s), getName(s), getPosition(s));
+        String id = s.getLine() + "." + s.getBrigade();
+        String name = "Autobus " + s.getLine() + " Brygada " + s.getBrigade();
+        LocationDTO position = getPosition(s.getLocation());
+        return new BusDTO(id, name, position);
     }
 
-    private String getId(BusState s) {
-        return s.getLine() + "." + s.getBrigade();
-    }
-
-    private String getName(BusState s) {
-        return "Autobus " + s.getLine() + " Brygada " + s.getBrigade();
-    }
-
-    private LocationDTO getPosition(BusState s) {
-        return new LocationDTO(s.getLocation().getLat(), s.getLocation().getLon());
+    private LocationDTO getPosition(Location l) {
+        return new LocationDTO(l.getLat(), l.getLon());
     }
 }

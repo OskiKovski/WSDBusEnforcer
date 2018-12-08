@@ -17,17 +17,15 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-@Component
 public abstract class SpringAgentRunner<T extends Agent> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Value("${agent.conf}")
+    @Value("${agent.conf:agent.properties}")
     private String agentConfigurationPath;
 
     @Autowired
@@ -36,6 +34,8 @@ public abstract class SpringAgentRunner<T extends Agent> {
     private AgentContainer container;
 
     private AgentController agentController;
+
+    protected final Object lock = new Object();
 
     protected T agent;
 
@@ -69,7 +69,9 @@ public abstract class SpringAgentRunner<T extends Agent> {
 
     public boolean sendO2ACommand(@NotNull O2ACommand command) {
         try {
-            agentController.putO2AObject(command, AgentController.ASYNC);
+            synchronized (lock) {
+                agentController.putO2AObject(command, AgentController.ASYNC);
+            }
             return true;
         } catch (StaleProxyException e) {
             e.printStackTrace();

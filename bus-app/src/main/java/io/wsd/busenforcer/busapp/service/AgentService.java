@@ -5,10 +5,7 @@ import io.wsd.busenforcer.agents.bus.o2a.RaiseEventO2A;
 import io.wsd.busenforcer.agents.bus.o2a.UpdateBrigadeInfoO2A;
 import io.wsd.busenforcer.agents.bus.o2a.UpdateLocationO2A;
 import io.wsd.busenforcer.agents.common.model.Location;
-import io.wsd.busenforcer.agents.common.o2a.O2ACommand;
-import io.wsd.busenforcer.busapp.agent.BusAgentRunner;
-import jade.wrapper.AgentController;
-import jade.wrapper.StaleProxyException;
+import io.wsd.busenforcer.agents.bus.integration.spring.BusAgentRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.util.Optional;
 
 @Service
 public class AgentService {
@@ -50,6 +45,6 @@ public class AgentService {
     }
 
     public BusState getBusState() {
-        return busAgentRunner.viewBusState();
+        return busAgentRunner.viewState();
     }
 }

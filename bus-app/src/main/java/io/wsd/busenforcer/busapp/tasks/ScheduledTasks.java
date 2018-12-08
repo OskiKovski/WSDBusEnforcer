@@ -17,7 +17,7 @@ public class ScheduledTasks {
 
     Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
 
-    @Value("${bus.locationRefreshRate}")
+    @Value("${location.refreshRate}")
     private Long locationRefreshRate;
 
     @Autowired

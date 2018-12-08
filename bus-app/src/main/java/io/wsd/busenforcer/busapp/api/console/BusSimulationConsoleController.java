@@ -16,7 +16,7 @@ public class BusSimulationConsoleController {
     @Autowired
     AgentService agentService;
 
-    @Value("${bus.number}")
+    @Value("${agent.bus.number}")
     String number;
 
 

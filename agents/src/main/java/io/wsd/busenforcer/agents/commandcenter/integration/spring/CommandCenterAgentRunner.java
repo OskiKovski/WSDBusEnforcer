@@ -1,10 +1,12 @@
-package io.wsd.busenforcer.centerapp.agent;
+package io.wsd.busenforcer.agents.commandcenter.integration.spring;
 
 import io.wsd.busenforcer.agents.commandcenter.CommandCenterAgent;
 import io.wsd.busenforcer.agents.commandcenter.model.CommandCenterState;
 import io.wsd.busenforcer.agents.common.integration.spring.SpringAgentRunner;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class CommandCenterAgentRunner extends SpringAgentRunner<CommandCenterAgent> {
@@ -19,7 +21,8 @@ public class CommandCenterAgentRunner extends SpringAgentRunner<CommandCenterAge
         return new CommandCenterAgent(new CommandCenterState());
     }
 
-    public CommandCenterState viewState() {
-        return SerializationUtils.clone(agent.getModel());
+    public Optional<CommandCenterState> viewState() {
+        return Optional.ofNullable(agent)
+                .map(a -> SerializationUtils.clone(agent.getModel()));
     }
 }
