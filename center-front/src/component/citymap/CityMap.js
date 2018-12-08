@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Map, Marker, TileLayer} from 'react-leaflet';
 import L from "leaflet";
+import CityMapMarker from './CityMapMarker';
 
 class CityMap extends Component {
 
-    constructor(){
+    constructor() {
         super();
 
         this.stamenTonerTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -13,46 +14,32 @@ class CityMap extends Component {
         this.zoomLevel = 12;
     }
 
-    getPoliceMarkers = () => {
-        return (
-            this.props.data.policeCars.map(elem => {
-                const policeIcon = new L.DivIcon({
-                    iconSize: new L.Point(0, 0),
-                    html: '<span style="color:white;font-size:40px;background:blue">' + elem.id + '</span>'
-                });
+	getMarkersOfType(elems, type) {
+		return elems.map(elem => {
+			return <CityMapMarker
+				type={type}
+				id={elem.id}
+				position={elem.position}
+				active={elem.id===this.props.data.hovered}
+				hoverHandler={this.props.hoverHandler}>
+			</CityMapMarker>
+		});
+	}		
+	
+    getPoliceMarkers() {
+        return this.getMarkersOfType(this.props.data.policeCars, "policeCar");
+    }
 
-                return <Marker
-                    key={elem.id}
-                    position={elem.position}
-                    icon={ policeIcon }>
-                </Marker>
-            })
-        )
-    };
+    getBusMarkers() {
+        return this.getMarkersOfType(this.props.data.buses, "bus");
+    }
 
-    getBusMarkers = () => {
-        return (
-            this.props.data.buses.map(elem => {
-                const busIcon = new L.DivIcon({
-                    iconSize: new L.Point(0, 0),
-                    html: '<span style="color:black;font-size:40px;background:orange">' + elem.id + '</span>'
-                });
-
-                return <Marker
-                    key={elem.id}
-                    position={elem.position}
-                    icon={ busIcon }>
-                </Marker>
-            })
-        )
-    };
-
-    getMarkers = () => {
-        return <div>
+    getMarkers() {
+        return <Fragment>
             {this.getBusMarkers()}
             {this.getPoliceMarkers()}
-        </div>
-    };
+        </Fragment>
+    }
 
     render() {
         return (
@@ -61,11 +48,11 @@ class CityMap extends Component {
                     center={this.mapCenter}
                     zoom={this.zoomLevel}
                 >
-                    <TileLayer
-                        attribution={this.stamenTonerAttr}
-                        url={this.stamenTonerTiles}
-                    />
-                    {this.getMarkers()}
+					<TileLayer
+						attribution={this.stamenTonerAttr}
+						url={this.stamenTonerTiles}
+					/>
+					{this.getMarkers()}
                 </Map>
             </div>
         );

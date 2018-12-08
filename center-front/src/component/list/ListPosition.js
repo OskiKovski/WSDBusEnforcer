@@ -5,34 +5,27 @@ class ListPosition extends Component {
 
     constructor(){
         super();
-        this.state = {
-            response: []
-        };
+		this.hoverOn = this.hoverOn.bind(this);
+		this.hoverOff = this.hoverOff.bind(this);
     }
-
-    determineStyle = () => {
-        return this.props.index % 2 ? 'list-pos1' : 'list-pos2';
-    };
-
-    entry = () => {
-        return (
-            <div>
-                <div className="list-pos-section1">
-                    <div>
-                        <div>
-                            <b>{this.props.name}</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    };
+	
+	hoverOn() {
+		this.props.hoverHandler(this.props.id);
+	}
+	
+	hoverOff() {
+		this.props.hoverHandler(null);
+	}
 
     render() {
         return (
-            <div className={this.determineStyle()}>
-                {this.entry()}
-            </div>
+			<tr
+				className={this.props.active ? "table-active" : ""}
+				onMouseEnter={this.hoverOn}
+				onMouseLeave={this.hoverOff}>
+				<th scope="row">{this.props.index}</th>
+                <td>{this.props.name}</td>
+            </tr>
         );
     }
 }

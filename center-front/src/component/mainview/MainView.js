@@ -11,14 +11,13 @@ class MainView extends Component {
     constructor(){
         super();
         this.state = {
-            response: {
-                buses: [],
-                policeCars: [],
-            }
-        };
+			buses: [],
+			policeCars: [],
+			hovered: null
+		};
 
         //this.setMock();
-
+		this.hoverHandler = this.hoverHandler.bind(this);
         this.fetchUpdate = this.fetchUpdate.bind(this);
         this.fetchUpdate();
         setInterval(this.fetchUpdate, 5000);
@@ -63,29 +62,46 @@ class MainView extends Component {
     async fetchUpdate() {
         axios.get(url)
             .then(response => {
-                this.setState({
-                    response: response.data
-                });
+                this.setState(this.createState(response));
             })
     }
+	
+	createState(response) {
+		let state = {
+			buses: response.data.buses,
+			policeCars: response.data.policeCars,
+			hovered: this.state.hovered
+			
+		};
+		return state;
+	}
+	
+	hoverHandler(hovered) {
+		this.setState(
+			{...this.state, hovered: hovered}
+		);
+	}
 
     render() {
         return (
-            <section className="side-by-side-container">
-                <div className="map-section">
-                    <CityMap data={this.state.response}/>
-                </div>
-                <div className="list-container-section">
-                    <section className="lists-container">
-                        <div className="left-list-section">
-                            <BusListView type={'BUS'} data={this.state.response.buses}/>
-                        </div>
-                        <div className="right-list-section">
-                            <PoliceListView type={'POLICE'} data={this.state.response.policeCars}/>
-                        </div>
-                    </section>
-                </div>
-            </section>
+		<div className="container-fluid">
+			<h1>Command Center</h1>
+			<div className="row">
+				<div className="col-lg-6">
+					<CityMap data={this.state} hoverHandler={this.hoverHandler}/>
+				</div>
+				<div className="col-lg-5">
+					<div className="row">
+						<div className="col-md-6">
+							<BusListView type={'BUS'} data={this.state.buses} hovered={this.state.hovered} hoverHandler={this.hoverHandler}/>
+						</div>
+						<div className="col-md-6">
+							<PoliceListView type={'POLICE'} data={this.state.policeCars} hovered={this.state.hovered} hoverHandler={this.hoverHandler}/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
         )
     }
 }

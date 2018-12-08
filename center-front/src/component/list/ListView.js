@@ -12,20 +12,29 @@ class ListView extends Component {
         return (
             this.props.data.map(elem => {
                 j++;
-                return <ListPosition key={elem.id} name={elem.name} index={j}/>
+                return <ListPosition
+					index={j}
+					id={elem.id}
+					name={elem.name}
+					active={this.props.hovered === elem.id}
+					hoverHandler={this.props.hoverHandler} />
             })
         );
     };
 
     render() {
         return (
-            <div>
-                <div className="list-view-title">
-                    {this.determineTitleByType()}
-                </div>
-
-                {this.determineListContent()}
-            </div>
+			<table className="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>{this.determineTitleByType()}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.determineListContent()}
+				</tbody>
+			</table>
         );
     }
 }
