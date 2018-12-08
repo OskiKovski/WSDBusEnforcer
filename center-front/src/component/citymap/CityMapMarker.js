@@ -49,7 +49,7 @@ class CityMapMarker extends Component {
 				key={this.props.id}
 				position={pos}
 				icon={this.getIcon()}>
-				<Popup>({pos[0]}, {pos[1]})</Popup>
+				<Popup>({pos.lat}, {pos.lon})</Popup>
 			</Marker>
         );
     }
