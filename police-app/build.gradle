@@ -1,0 +1,42 @@
+plugins {
+    id "org.springframework.boot" version "2.1.0.RELEASE"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+group = 'io.wsd.busenforcer'
+version = '0.0.1-SNAPSHOT'
+
+ext {
+    springCloudVersion = 'Greenwich.M3'
+}
+
+repositories {
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+	implementation('org.springframework.boot:spring-boot-starter-web')
+    //implementation('org.springframework.cloud:spring-cloud-starter-security')
+    implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
+    implementation('com.tilab.jade:jade:4.5.0')
+	implementation('com.google.code.gson:gson:2.8.5')
+    implementation(project(':agents')) {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+    developmentOnly('org.springframework.boot:spring-boot-devtools')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

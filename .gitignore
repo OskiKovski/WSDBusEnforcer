@@ -6,6 +6,10 @@ bus-app/.idea
 bus-app/.gradle
 bus-app/build
 
+police-app/.idea
+police-app/.gradle
+police-app/build
+
 agents/.idea
 agents/.gradle
 agents/build

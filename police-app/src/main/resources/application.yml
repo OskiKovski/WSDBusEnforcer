@@ -1,0 +1,37 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: BusSimulation
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  http:
+    converters:
+      preffered-json-mapper: gson
+
+agent:
+  bus:
+    number: 1001
+    line: 509
+    brigade: 1
+
+location:
+  refreshRate: 5000
+  
+api:
+  ors:
+    url: http://api.openrouteservice.org
+    apiKey: 5b3ce3597851110001cf6248acef53432c1848efa4a530a3547796ab
+
+feign:
+  client:
+    config:
+      api-ors:
+        loggerLevel: basic
+
+logging:
+  level:
+    io.wsd.busenforcer.busapp: DEBUG
