@@ -19,6 +19,14 @@ task runJadeAgents(type: JavaExec) {
     main = "jade.Boot"
     classpath = sourceSets.main.runtimeClasspath
 }
+
+task runJadeBackupContainer(type: JavaExec) {
+    args = ['-backupmain', '-conf', 'src/main/resources/jade-backup-main-container.properties']
+    description = "Starts JADE backup main container and initialize platform."
+    main = "jade.Boot"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 ext {
     springPlatformVersion = 'Cairo-RELEASE'
 }
