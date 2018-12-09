@@ -13,12 +13,10 @@ class CityMapMarker extends Component {
     }
 	
 	hoverOn(e) {
-		//this.openPopup();
 		this.props.hoverHandler(this.props.id);
 	}
 	
 	hoverOff(e) {
-		//this.closePopup();
 		this.props.hoverHandler(null);
 	}
 	
@@ -26,7 +24,8 @@ class CityMapMarker extends Component {
 		let iconClassName = "leaflet-div-icon";
 		const labelClassNames = {
 			bus: "bus-label",
-			policeUnit: "police-unit-label"
+			availablePoliceUnit: "police-unit-label-available",
+			unavailablePoliceUnit: "police-unit-label-unavailable"
 		};
 		let labelClassName = labelClassNames[this.props.type];
 		if (this.props.active) {

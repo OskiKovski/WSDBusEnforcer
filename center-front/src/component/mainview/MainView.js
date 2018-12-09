@@ -46,12 +46,14 @@ class MainView extends Component {
                 {
                     id: '007',
                     name: '007',
-                    position: {lat:52.255094, lon:  20.997438}
+                    position: {lat:52.255094, lon:  20.997438},
+					available: true
                 },
                 {
                     id: 'W11',
                     name: 'W 11',
-                    position: {lat:52.254923, lon:  20.995979}
+                    position: {lat:52.254923, lon:  20.995979},
+					available: false
                 }
             ]
         };

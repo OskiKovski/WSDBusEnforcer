@@ -7,4 +7,5 @@ public class PoliceUnitDTO {
     private final String id;
     private final String name;
     private final LocationDTO position;
+    private final boolean available;
 }

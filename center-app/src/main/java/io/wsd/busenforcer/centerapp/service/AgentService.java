@@ -49,7 +49,7 @@ public class AgentService {
         String id = s.getId();
         String name = "Jednostka " + s.getId();
         LocationDTO position = getPosition(s.getLocation());
-        return new PoliceUnitDTO(id, name, position);
+        return new PoliceUnitDTO(id, name, position, s.isAvailable());
     }
 
     private BusDTO mapBusStateToBusDTO(BusState s) {

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class PoliceState implements AgentModel {
     private String id;
     private Location location;
+    private boolean available = true;
 }

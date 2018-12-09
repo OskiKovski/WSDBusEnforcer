@@ -13,12 +13,17 @@
 	background: rgba(255,165,0,0.8);
 }
 
-.police-unit-label {
+.police-unit-label-available {
 	color: white;
 	background: rgba(0,0,205,0.8);
 }
 
-.bus-label, .police-unit-label {
+.police-unit-label-unavailable {
+	color: red;
+	background: rgba(0,0,205,0.8);
+}
+
+.bus-label, .police-unit-label-available, .police-unit-label-unavailable {
 	font-size: 35px;
 	pointer-events: none;
 	margin: 16px;

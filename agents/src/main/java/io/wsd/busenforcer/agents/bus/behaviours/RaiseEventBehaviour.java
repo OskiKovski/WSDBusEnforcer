@@ -1,17 +1,19 @@
 package io.wsd.busenforcer.agents.bus.behaviours;
 
 import io.wsd.busenforcer.agents.bus.BusAgent;
-import io.wsd.busenforcer.agents.common.Topics;
+import io.wsd.busenforcer.agents.common.Services;
 import io.wsd.busenforcer.agents.common.behaviours.BehaviourWrapper;
-import jade.core.AID;
-import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
-import jade.core.messaging.TopicManagementHelper;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -27,15 +29,19 @@ public class RaiseEventBehaviour extends BehaviourWrapper<BusAgent> {
     @Override
     protected Behaviour createBehaviour() {
         try {
-            TopicManagementHelper topicHelper = (TopicManagementHelper)
-                    agent.getHelper(TopicManagementHelper.SERVICE_NAME);
-            AID topicAID = topicHelper.createTopic(Topics.DANGEROUS_EVENTS.getName());
-
             ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
             cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-            cfp.addReceiver(topicAID);
             cfp.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
             cfp.setContentObject(agent.getBusState().getLocation());
+
+            DFAgentDescription agentDescription = new DFAgentDescription();
+            ServiceDescription serviceDescription = new ServiceDescription();
+            serviceDescription.setType(Services.POLICE_INTERVENTION_SERVICE.getName());
+            agentDescription.addServices(serviceDescription);
+
+            Arrays.stream(DFService.search(agent, agentDescription))
+                    .map(DFAgentDescription::getName)
+                    .forEach(cfp::addReceiver);
 
             return new ContractNetInitiator(agent, cfp) {
 
@@ -81,7 +87,8 @@ public class RaiseEventBehaviour extends BehaviourWrapper<BusAgent> {
                     log.info("Inform: " + inform);
                 }
             };
-        } catch (IOException | ServiceException e) {
+        } catch (IOException | FIPAException e) {
+            // TODO: 09.12.2018 handle exceptions 
             throw new RuntimeException(e);
         }
     }

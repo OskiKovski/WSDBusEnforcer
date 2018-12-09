@@ -3,16 +3,20 @@ package io.wsd.busenforcer.agents.police;
 import com.javadocmd.simplelatlng.LatLngTool;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 import io.wsd.busenforcer.agents.common.BaseAgent;
-import io.wsd.busenforcer.agents.common.Topics;
+import io.wsd.busenforcer.agents.common.Services;
+import io.wsd.busenforcer.agents.common.behaviours.BehaviourWrapper;
 import io.wsd.busenforcer.agents.common.model.Location;
 import io.wsd.busenforcer.agents.police.behaviours.PublishPoliceStatusBehaviour;
 import io.wsd.busenforcer.agents.police.model.PoliceState;
-import jade.core.AID;
-import jade.core.ServiceException;
-import jade.core.messaging.TopicManagementHelper;
+import jade.core.behaviours.Behaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -47,46 +51,71 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
             this.model.setId(id);
             this.model.setLocation(location);
         }
-        log.info("Started.");
+        registerServices();
         addBehaviour(new PublishPoliceStatusBehaviour(this));
-        try {
-            TopicManagementHelper topicHelper = (TopicManagementHelper)
-                    getHelper(TopicManagementHelper.SERVICE_NAME);
-            AID topicAID = topicHelper.createTopic(Topics.DANGEROUS_EVENTS.getName());
-            topicHelper.register(topicAID);
-            MessageTemplate messageTemplate = MessageTemplate.MatchTopic(topicAID);
-            addBehaviour(new ContractNetResponder(this, messageTemplate) {
+        addBehaviour(new BehaviourWrapper<PoliceAgent>(this) {
 
-                @Override
-                protected ACLMessage handleCfp(ACLMessage cfp) throws RefuseException, FailureException, NotUnderstoodException {
-                    log.info("Recieved Cfp " + cfp);
-                    Location location = null;
-                    try {
-                        location = (Location) cfp.getContentObject();
-                    } catch (ClassCastException | UnreadableException e) {
-                        // TODO: 08.12.2018 handle by throwing not understood probably
-                        e.printStackTrace();
+            @Override
+            protected Behaviour createBehaviour() {
+                MessageTemplate messageTemplate = MessageTemplate.and(
+                        MessageTemplate.MatchPerformative(ACLMessage.CFP),
+                        MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET));
+                return new ContractNetResponder(agent, messageTemplate) {
+
+                    @Override
+                    protected ACLMessage handleCfp(ACLMessage cfp) throws RefuseException, FailureException, NotUnderstoodException {
+                        log.info("Recieved dangerous event intervention request.");
+                        if(!agent.getModel().isAvailable()) {
+                            ACLMessage refuse = cfp.createReply();
+                            refuse.setPerformative(ACLMessage.REFUSE);
+                            refuse.setContent("Not available, refusing intervention request.");
+                            throw new RefuseException(refuse);
+                        }
+                        Location location = null;
+                        try {
+                            location = (Location) cfp.getContentObject();
+                        } catch (ClassCastException | UnreadableException e) {
+                            // TODO: 08.12.2018 handle by throwing not understood probably
+                            e.printStackTrace();
+                        }
+                        Double score = interventionEvaluator.evaluate(location);
+                        ACLMessage propose = cfp.createReply();
+                        propose.setPerformative(ACLMessage.PROPOSE);
+                        propose.setContent(String.valueOf(score));
+                        return propose;
                     }
-                    Double score = interventionEvaluator.evaluate(location);
-                    ACLMessage propose = cfp.createReply();
-                    propose.setPerformative(ACLMessage.PROPOSE);
-                    propose.setContent(String.valueOf(score));
-                    return propose;
-                }
 
-                @Override
-                protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
-                    log.info("Proposal accepted: " + accept);
-                    return null;
-                }
+                    @Override
+                    protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose, ACLMessage accept) throws FailureException {
+                        log.info("Chosen for intervention. Sending confirmation.");
+                        agent.getModel().setAvailable(false);
+                        ACLMessage inform = accept.createReply();
+                        inform.setPerformative(ACLMessage.INFORM);
+                        return inform;
+                    }
 
-                @Override
-                protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-                    log.info("Proposal rejected: " + reject);
-                }
-            });
-        } catch (ServiceException e) {
-            log.error("Failed to register on topic \"" + Topics.DANGEROUS_EVENTS + "\".", e);
+                    @Override
+                    protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
+                        log.info("Not chosen for intervention. Standing by for next events.");
+                    }
+                };
+            }
+        });
+        log.info("Started.");
+    }
+
+
+    private void registerServices() {
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(Services.POLICE_INTERVENTION_SERVICE.getType());
+        serviceDescription.setName(Services.POLICE_INTERVENTION_SERVICE.getName());
+        DFAgentDescription dfAgentDescription = new DFAgentDescription();
+        dfAgentDescription.setName(getAID());
+        dfAgentDescription.addServices(serviceDescription);
+        try {
+            DFService.register(this, dfAgentDescription);
+        } catch (FIPAException e) {
+            e.printStackTrace();
         }
     }
 
@@ -97,6 +126,21 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
      */
     public void registerInterventionEvaluator(InterventionEvaluator interventionEvaluator) {
         this.interventionEvaluator = interventionEvaluator;
+    }
+
+    @Override
+    public void takeDown() {
+        super.takeDown();
+        deregisterServices();
+    }
+
+    private void deregisterServices() {
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            // TODO: 09.12.2018 handle exception
+            log.error("Coulnd't deregister servicese", e);
+        }
     }
 
     @FunctionalInterface
