@@ -28,7 +28,7 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
     private InterventionEvaluator interventionEvaluator;
 
     public PoliceAgent() {
-        this(new PoliceState());
+        this(PoliceState.empty());
     }
 
     public PoliceAgent(PoliceState model) {
@@ -47,8 +47,8 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
             String id = (String) arguments[0];
             double lat = Double.parseDouble((String) arguments[1]);
             double lon = Double.parseDouble((String) arguments[2]);
-            Location location = new Location(lat, lon);
-            this.model.setId(id);
+            Location location = Location.of(lat, lon);
+            this.model.setUnitId(id);
             this.model.setLocation(location);
         }
         registerServices();
@@ -90,6 +90,7 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
                         log.info("Chosen for intervention. Sending confirmation.");
                         agent.getModel().setAvailable(false);
                         ACLMessage inform = accept.createReply();
+                        // TODO: 09.12.2018 this should take input from GUI somehow
                         inform.setPerformative(ACLMessage.INFORM);
                         return inform;
                     }
@@ -144,13 +145,13 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
     }
 
     @FunctionalInterface
-    interface InterventionEvaluator {
+    public interface InterventionEvaluator {
         /**
          * Should return intervention score - the higher the more suited agent is for intervention.
          *
-         * @param location1 event data.
+         * @param location event data.
          * @return intervention score.
          */
-        Double evaluate(Location location1);
+        Double evaluate(Location location);
     }
 }

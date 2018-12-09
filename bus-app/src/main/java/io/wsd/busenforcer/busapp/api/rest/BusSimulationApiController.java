@@ -1,6 +1,6 @@
 package io.wsd.busenforcer.busapp.api.rest;
 
-import io.wsd.busenforcer.busapp.api.rest.dto.BrigadeInfoDTO;
+import io.wsd.busenforcer.busapp.api.dto.BrigadeInfoDTO;
 import io.wsd.busenforcer.busapp.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

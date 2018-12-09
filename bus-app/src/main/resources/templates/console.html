@@ -6,11 +6,18 @@
 </head>
 <body>
     <h1 th:inline="text">Bus [[${number}]] Console</h1>
-    <h2 th:inline="text">Line: [[${line}]]</h2>
-    <h2 th:inline="text">Brigade: [[${brigade}]]</h2>
+    <h2 th:inline="text">Line: [[${brigadeInfo.line}]] Brigade: [[${brigadeInfo.brigade}]]</h2>
     <h2 th:inline="text">Lat: [[${lat}]] Lon [[${lon}]]</h2>
-    <form action="/bus/api/raiseEvent" method="post">
+    <form action="#" th:action="@{/bus/console/raiseEvent}" method="post">
         <input type="submit" value="Raise event" />
+    </form>
+    <form action="#" th:action="@{/bus/console/updateBrigadeInfo}" th:object="${brigadeInfo}" method="post">
+        <fieldset>
+            <label for="line">Line: </label><input type="text" id="line" th:field="*{line}" />
+            <label for="brigade">Brigade: </label><input type="text" id="brigade" th:field="*{brigade}" />
+            <input type="submit" value="Update brigade" />
+            <input type="reset" value="Reset" />
+        </fieldset>
     </form>
 </body>
 </html>

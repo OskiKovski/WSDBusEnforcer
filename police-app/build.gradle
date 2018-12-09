@@ -26,7 +26,6 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
     //implementation('org.springframework.cloud:spring-cloud-starter-security')
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
-    implementation('com.tilab.jade:jade:4.5.0')
 	implementation('com.google.code.gson:gson:2.8.5')
     implementation(project(':agents')) {
         exclude group: 'org.slf4j', module: 'slf4j-simple'

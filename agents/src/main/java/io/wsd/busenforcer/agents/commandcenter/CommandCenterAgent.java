@@ -9,11 +9,7 @@ public class CommandCenterAgent extends BaseAgent<CommandCenterState> {
     static final long serialVersionUID = 1L;
 
     public CommandCenterAgent() {
-        this(new CommandCenterState());
-    }
-
-    public CommandCenterAgent(CommandCenterState model) {
-        super(model);
+        super(CommandCenterState.empty());
     }
 
     @Override

@@ -5,6 +5,7 @@ import io.wsd.busenforcer.busapp.client.ApiUMClient;
 import io.wsd.busenforcer.busapp.client.dto.LocationInfoDTO;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,13 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
+
+@Slf4j
 @Service
 public class LocationService {
 
     private static final String BUS_TYPE = "1";
 
-    private Logger logger = LoggerFactory.getLogger(LocationService.class);
     private final ApiUMConfiguration apiConfig;
 
     @Autowired
@@ -34,13 +36,11 @@ public class LocationService {
     }
 
     public void updateLocation() {
-        logger.info("Updating location via UM api.");
         BusState busState = agentService.getBusState();
         Optional<LocationInfoDTO> location = apiUmClient.getLocation(apiConfig.resource_id, apiConfig.apiKey,
                 BUS_TYPE, busState.getLine(), busState.getBrigade());
-        location.ifPresent(l -> logger.info(l.toString()));
         String status = location.map(l -> agentService.updateLocation(l.getLat(), l.getLon())).orElse("Fail!");
-        logger.info("Location update: " + status);
+        log.info("Location update via UM api:" + status);
     }
 
 

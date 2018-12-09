@@ -37,7 +37,7 @@ public class AgentService {
                             .map(this::mapBusStateToBusDTO)
                             .collect(Collectors.toList());
                     List<PoliceUnitDTO> policeUnits = state.getPoliceStates().values().stream()
-                            .sorted(Comparator.comparing(PoliceState::getId, Comparator.nullsLast(Comparator.naturalOrder())))
+                            .sorted(Comparator.comparing(PoliceState::getUnitId, Comparator.nullsLast(Comparator.naturalOrder())))
                             .map(this::mapPoliceStateToPoliceUnitDTO)
                             .collect(Collectors.toList());
                     return new ListsResultDTO(buses, policeUnits);
@@ -46,8 +46,8 @@ public class AgentService {
     }
 
     private PoliceUnitDTO mapPoliceStateToPoliceUnitDTO(PoliceState s) {
-        String id = s.getId();
-        String name = "Jednostka " + s.getId();
+        String id = s.getUnitId();
+        String name = "Jednostka " + s.getUnitId();
         LocationDTO position = getPosition(s.getLocation());
         return new PoliceUnitDTO(id, name, position, s.isAvailable());
     }

@@ -7,11 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@AllArgsConstructor(staticName = "of")
+@NoArgsConstructor(staticName = "empty")
 public class BusState implements AgentModel {
-    private String line;
-    private String brigade;
-    private Location location;
+    private String line = "";
+    private String brigade = "";
+    private Location location = Location.zero();
 }

@@ -49,7 +49,7 @@ public abstract class TopicListenerBehaviour extends SequentialBehaviour {
                 if (template != null) {
                     ACLMessage msg = myAgent.receive(template);
                     if (msg != null) {
-                        log.info("Received message from topic \"" + topic + "\"");
+                        log.debug("Received message from topic \"" + topic + "\"");
                         handleMessage(msg);
                     } else {
                         block();
