@@ -1,6 +1,7 @@
 package io.wsd.busenforcer.policeapp.api.console;
 
 import io.wsd.busenforcer.agents.bus.model.BusState;
+import io.wsd.busenforcer.agents.police.model.PoliceState;
 import io.wsd.busenforcer.policeapp.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,24 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/bus")
-public class BusSimulationConsoleController {
+public class PoliceSimulationConsoleController {
 
     @Autowired
     AgentService agentService;
-
-    @Value("${agent.bus.number}")
-    String number;
 
 
 
     @GetMapping("/console")
     public String console(Model model) {
-        model.addAttribute("number", number);
-        BusState busState = agentService.getBusState();
-        model.addAttribute("line", busState.getLine());
-        model.addAttribute("brigade", busState.getBrigade());
-        model.addAttribute("lat", busState.getLocation().getLat());
-        model.addAttribute("lon", busState.getLocation().getLon());
+        PoliceState policeState = agentService.getPoliceState();
+        model.addAttribute("id", policeState.getId());
+        model.addAttribute("lat", policeState.getLocation().getLat());
+        model.addAttribute("lon", policeState.getLocation().getLon());
         return "console";
     }
 }

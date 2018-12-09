@@ -1,6 +1,7 @@
 package io.wsd.busenforcer.policeapp.service;
 
-import io.wsd.busenforcer.agents.bus.model.BusState;
+import io.wsd.busenforcer.agents.common.model.Location;
+import io.wsd.busenforcer.agents.police.model.PoliceState;
 import io.wsd.busenforcer.policeapp.client.ApiORSClient;
 import io.wsd.busenforcer.policeapp.client.dto.SummaryDTO;
 import lombok.Getter;
@@ -33,23 +34,22 @@ public class LocationService {
         this.apiConfig = apiConfig;
     }
 
-    public SummaryDTO getDistance(Double lat1, Double long1, Double lat2, Double long2) {
-        String concatedCoordinates = concatCoordinates(lat1, long1, lat2, long2);
-        Optional<SummaryDTO> location = apiORSClient.getDistance(apiConfig.apiKey, PROFILE, concatedCoordinates);
+    public SummaryDTO getDistance(Double busLatitude, Double busLongitude) {
+        PoliceState policeState = agentService.getPoliceState();
+        String concatenatedCoordinates = concatCoordinates(policeState.getLocation(), busLatitude, busLongitude);
+        Optional<SummaryDTO> location = apiORSClient.getDistance(apiConfig.apiKey, PROFILE, concatenatedCoordinates);
         location.ifPresent(l -> logger.info(l.toString()));
         return location.orElse(null);
     }
 
-    private String concatCoordinates(Double lat1, Double long1, Double lat2, Double long2){
-        return new StringBuilder()
-                .append(long1)
-                .append(",")
-                .append(lat1)
-                .append("|")
-                .append(long2)
-                .append(",")
-                .append(lat2)
-                .toString();
+    private String concatCoordinates(Location policeLocation, Double busLatitude, Double busLongitude){
+        return String.valueOf(policeLocation.getLon()) +
+                "," +
+                policeLocation.getLat() +
+                "|" +
+                busLongitude +
+                "," +
+                busLatitude;
     }
 
     @Component
@@ -60,8 +60,6 @@ public class LocationService {
 
         @NotNull
         private String url;
-        @NotNull
-        private String resource_id;
         @NotNull
         private String apiKey;
     }

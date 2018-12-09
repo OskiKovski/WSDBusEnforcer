@@ -22,7 +22,7 @@ public class PoliceAgent extends BaseAgent<PoliceState> {
     @Override
     public void setup() {
         Object[] arguments = getArguments();
-        if (arguments.length == 3) {
+        if (arguments != null && arguments.length == 3) {
             String id = (String) arguments[0];
             double lat = Double.parseDouble((String) arguments[1]);
             double lon = Double.parseDouble((String) arguments[2]);
