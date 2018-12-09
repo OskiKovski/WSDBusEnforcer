@@ -15,8 +15,6 @@ spring:
 agent:
   police:
     unitId: D336
-    lat: 52.270025
-    lon: 21.048192
 
 api:
   ors:

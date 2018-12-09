@@ -14,12 +14,6 @@ public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
     @Value("${agent.police.unitId}")
     private String unitId;
 
-    @Value("${agent.police.lat}")
-    private Double lat;
-
-    @Value("${agent.police.lon}")
-    private Double lon;
-
     @Override
     protected String buildAgentNickname() {
         return "police-unit-" + unitId + "-agent";
@@ -27,12 +21,7 @@ public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
 
     @Override
     protected PoliceAgent createAgent() {
-<<<<<<< HEAD
-        PoliceState initialPoliceState = new PoliceState(unitId, new Location(lat, lon), false);
-        return new PoliceAgent(initialPoliceState);
-=======
         return new PoliceAgent(PoliceState.of(unitId, Location.zero(), true));
->>>>>>> Police agent integration DONE
     }
 
     public void registerInterventionEvaluator(PoliceAgent.InterventionEvaluator interventionEvaluator) {
