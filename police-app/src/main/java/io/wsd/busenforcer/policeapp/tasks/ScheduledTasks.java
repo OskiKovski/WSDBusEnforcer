@@ -26,14 +26,14 @@ public class ScheduledTasks {
     @Autowired
     private LocationService locationService;
 
-    @Async
-    @EventListener(AgentStartedEvent.class)
-    public void startUpdateLocation() {
-        logger.info("Starting periodic location update task.");
-        scheduler.schedule(this::updateLocation, new PeriodicTrigger(locationRefreshRate));
-    }
-
-    private void updateLocation() {
-        locationService.updateLocation();
-    }
+//    @Async
+//    @EventListener(AgentStartedEvent.class)
+//    public void startUpdateLocation() {
+//        logger.info("Starting periodic location update task.");
+//        scheduler.schedule(this::getDistance, new PeriodicTrigger(locationRefreshRate));
+//    }
+//
+//    private void getDistance() {
+//        locationService.getDistance();
+//    }
 }

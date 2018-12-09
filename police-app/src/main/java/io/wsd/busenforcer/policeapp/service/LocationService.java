@@ -19,7 +19,6 @@ import java.util.Optional;
 public class LocationService {
 
     private static final String PROFILE = "driving-car";
-    private static final String COORDINATES = "21.042955,52.273268|21.048192,52.270025";
 
     private Logger logger = LoggerFactory.getLogger(LocationService.class);
     private final ApiORSConfiguration apiConfig;
@@ -34,14 +33,24 @@ public class LocationService {
         this.apiConfig = apiConfig;
     }
 
-    public void updateLocation() {
-        BusState busState = agentService.getBusState();
-        Optional<SummaryDTO> location = apiORSClient.getDistance(apiConfig.apiKey, PROFILE, COORDINATES);
+    public SummaryDTO getDistance(Double lat1, Double long1, Double lat2, Double long2) {
+        String concatedCoordinates = concatCoordinates(lat1, long1, lat2, long2);
+        Optional<SummaryDTO> location = apiORSClient.getDistance(apiConfig.apiKey, PROFILE, concatedCoordinates);
         location.ifPresent(l -> logger.info(l.toString()));
-//        String status = location.map(l -> agentService.updateLocation(l.getLat(), l.getLon())).orElse("Fail!");
-//        logger.info("Location update: " + status);
+        return location.orElse(null);
     }
 
+    private String concatCoordinates(Double lat1, Double long1, Double lat2, Double long2){
+        return new StringBuilder()
+                .append(long1)
+                .append(",")
+                .append(lat1)
+                .append("|")
+                .append(long2)
+                .append(",")
+                .append(lat2)
+                .toString();
+    }
 
     @Component
     @Getter

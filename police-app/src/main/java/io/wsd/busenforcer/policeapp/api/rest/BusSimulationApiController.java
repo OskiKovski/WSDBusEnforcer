@@ -1,28 +1,27 @@
 package io.wsd.busenforcer.policeapp.api.rest;
 
 import io.wsd.busenforcer.policeapp.api.rest.dto.BrigadeInfoDTO;
+import io.wsd.busenforcer.policeapp.client.dto.SummaryDTO;
 import io.wsd.busenforcer.policeapp.service.AgentService;
+import io.wsd.busenforcer.policeapp.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/bus/api")
+@RequestMapping(value = "/police/api")
 public class BusSimulationApiController {
 
     @Autowired
     AgentService agentService;
 
-    @RequestMapping(value = "/raiseEvent", method = RequestMethod.POST)
-    public String raiseEvent() {
-        return agentService.raiseEvent();
-    }
+    @Autowired
+    LocationService locationService;
 
-    @PostMapping(value = "/updateBrigadeInfo", consumes = "application/json")
-    public String updateBrigadeInfo(@RequestBody BrigadeInfoDTO dto) {
-        return agentService.updateBrigadeInfo(dto.getLine(), dto.getBrigade());
+    @RequestMapping(value = "/getDistance", method = RequestMethod.GET)
+    public SummaryDTO getDistance(@RequestParam ("lat1") Double lat1,
+                                  @RequestParam ("long1") Double long1,
+                                  @RequestParam ("lat2") Double lat2,
+                                  @RequestParam ("long2") Double long2) {
+        return locationService.getDistance(lat1, long1, lat2, long2);
     }
 }
