@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
 
-    @Value("${agent.police.id}")
-    private String id;
+    @Value("${agent.police.unitId}")
+    private String unitId;
 
     @Value("${agent.police.lat}")
     private Double lat;
@@ -22,14 +22,16 @@ public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
 
     @Override
     protected String buildAgentNickname() {
-        return "police-" + id + "-agent";
+        return "police-unit-" + unitId + "-agent";
     }
 
     @Override
     protected PoliceAgent createAgent() {
-        PoliceState initialPoliceState = new PoliceState(id, new Location(lat, lon), false);
+        PoliceState initialPoliceState = new PoliceState(unitId, new Location(lat, lon), false);
         return new PoliceAgent(initialPoliceState);
     }
+
+
 
     public PoliceState viewState() {
         return SerializationUtils.clone(agent.getModel());
