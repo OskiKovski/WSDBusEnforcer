@@ -30,7 +30,7 @@ public class AgentService {
     }
 
     public String updateLocation(@NotNull Double lat, @NotNull Double lon) {
-        final UpdateLocationO2A command = new UpdateLocationO2A(new Location(lat, lon));
+        final UpdateLocationO2A command = new UpdateLocationO2A(Location.of(lat, lon));
         return busAgentRunner.sendO2ACommand(command) ? SUCCESS : FAILED;
     }
 

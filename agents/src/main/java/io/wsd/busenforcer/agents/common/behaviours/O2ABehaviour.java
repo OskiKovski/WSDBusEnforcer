@@ -22,10 +22,11 @@ public class O2ABehaviour<T extends Agent> extends CyclicBehaviour {
     public void action() {
         Object obj = agent.getO2AObject();
         if (obj instanceof O2ACommand) {
+            @SuppressWarnings("unchecked")
             O2ACommand<T> command = (O2ACommand<T>) obj;
-            logger.info("O2A command received.");
+            logger.debug("O2A command received.");
             command.execute(agent);
-            logger.info("O2A command execution finished.");
+            logger.debug("O2A command execution finished.");
         } else {
             block();
         }

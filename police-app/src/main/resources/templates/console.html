@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bus Simulation</title>
+    <title>Police Unit Simulation</title>
 </head>
 <body>
-    <h1 th:inline="text">Bus [[${number}]] Console</h1>
-    <h2 th:inline="text">Line: [[${line}]]</h2>
-    <h2 th:inline="text">Brigade: [[${brigade}]]</h2>
-    <h2 th:inline="text">Lat: [[${lat}]] Lon [[${lon}]]</h2>
-    <form action="/police/api/raiseEvent" method="post">
-        <input type="submit" value="Raise event" />
+    <h1 th:inline="text">Police Unit [[${unitId}]] Console</h1>
+    <h2 th:inline="text">Lat: [[${location.lat}]] Lon [[${location.lon}]]</h2>
+    <form action="#" th:action="@{/police/console/updateLocation}" th:object="${location}" method="post">
+        <fieldset>
+            <label for="lat">Lat: </label><input type="text" id="lat" th:field="*{lat}" />
+            <label for="lon">Lon: </label><input type="text" id="lon" th:field="*{lon}" />
+            <input type="submit" value="Update location" />
+            <input type="reset" value="Reset" />
+        </fieldset>
     </form>
 </body>
 </html>

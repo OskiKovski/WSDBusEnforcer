@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: BusSimulation
+    name: PoliceSimulation
   thymeleaf:
     enabled: true
     prefix: classpath:/templates/
@@ -14,13 +14,10 @@ spring:
 
 agent:
   police:
-    id: 123
+    unitId: D336
     lat: 52.270025
     lon: 21.048192
 
-location:
-  refreshRate: 5000
-  
 api:
   ors:
     url: http://api.openrouteservice.org
@@ -30,7 +27,7 @@ feign:
   client:
     config:
       api-ors:
-        loggerLevel: basic
+        loggerLevel: full
 
 logging:
   level:

@@ -53,7 +53,12 @@ public class RaiseEventBehaviour extends BehaviourWrapper<BusAgent> {
 
                 @Override
                 protected void handlePropose(ACLMessage propose, Vector acceptances) {
-                    log.info("Propose: " + propose);
+                    log.info("Proposal received. Intervention score: " + propose.getContent());
+                }
+
+                @Override
+                protected void handleRefuse(ACLMessage refuse) {
+                    log.info(refuse.getSender() + " is not available and refuses intervention.");
                 }
 
                 @SuppressWarnings("unchecked")

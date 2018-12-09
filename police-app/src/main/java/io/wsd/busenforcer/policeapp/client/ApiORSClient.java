@@ -12,6 +12,8 @@ import java.util.Optional;
 @FeignClient(name = "api-ors", url = "${api.ors.url}", configuration = ApiORSConfiguration.class)
 public interface ApiORSClient {
 
+    public static final String DRIVING_CAR_PROFILE = "driving-car";
+
     @RequestMapping(method = RequestMethod.GET, value = "/directions")
     Optional<SummaryDTO> getDistance(@RequestParam("api_key") String apiKey,
                                      @RequestParam("profile") String profile,

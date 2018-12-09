@@ -27,13 +27,25 @@ public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
 
     @Override
     protected PoliceAgent createAgent() {
+<<<<<<< HEAD
         PoliceState initialPoliceState = new PoliceState(unitId, new Location(lat, lon), false);
         return new PoliceAgent(initialPoliceState);
+=======
+        return new PoliceAgent(PoliceState.of(unitId, Location.zero(), true));
+>>>>>>> Police agent integration DONE
     }
 
-
+    public void registerInterventionEvaluator(PoliceAgent.InterventionEvaluator interventionEvaluator) {
+        agent.registerInterventionEvaluator(interventionEvaluator);
+    }
 
     public PoliceState viewState() {
         return SerializationUtils.clone(agent.getModel());
+    }
+
+    public void updateLocation(Location location) {
+        synchronized (lock) {
+            agent.getModel().setLocation(location);
+        }
     }
 }

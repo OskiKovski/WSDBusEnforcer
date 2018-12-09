@@ -7,10 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
+@NoArgsConstructor(staticName = "empty")
 public class PoliceState implements AgentModel {
-    private String id;
-    private Location location;
+    private String unitId = "";
+    private Location location = Location.zero();
     private boolean available = true;
 }

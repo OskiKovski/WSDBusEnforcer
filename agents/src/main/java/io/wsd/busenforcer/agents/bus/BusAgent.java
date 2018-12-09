@@ -10,7 +10,7 @@ public class BusAgent extends BaseAgent<BusState> {
     static final long serialVersionUID = 1L;
 
     public BusAgent() {
-        this(new BusState());
+        this(BusState.empty());
     }
     public BusAgent(BusState model) {
         super(model);

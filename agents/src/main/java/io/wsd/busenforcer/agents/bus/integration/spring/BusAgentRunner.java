@@ -27,7 +27,7 @@ public class BusAgentRunner extends SpringAgentRunner<BusAgent> {
 
     @Override
     protected BusAgent createAgent() {
-        BusState initialBusState = new BusState(line, brigade, new Location(.0, .0));
+        BusState initialBusState = BusState.of(line, brigade, Location.zero());
         return new BusAgent(initialBusState);
     }
 

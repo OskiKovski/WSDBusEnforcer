@@ -18,7 +18,7 @@ public class CommandCenterAgentRunner extends SpringAgentRunner<CommandCenterAge
 
     @Override
     protected CommandCenterAgent createAgent() {
-        return new CommandCenterAgent(new CommandCenterState());
+        return new CommandCenterAgent();
     }
 
     public Optional<CommandCenterState> viewState() {
