@@ -35,20 +35,20 @@ public class PublishPoliceStatusBehaviour extends BehaviourWrapper<PoliceAgent> 
                             agent.getHelper(TopicManagementHelper.SERVICE_NAME);
                     this.topic = topicHelper.createTopic(topic.getName());
                 } catch (ServiceException e) {
-                    logger.error("Can't create topic: " + topic.getName());
+                    log.error("Can't create topic: " + topic.getName());
                 }
             }
 
             @Override
             protected void onTick() {
                 try {
-                    logger.info("Publishing status.");
+                    log.info("Publishing status.");
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                     msg.addReceiver(topic);
                     msg.setContentObject(agent.getModel());
                     agent.send(msg);
                 } catch (IOException e) {
-                    logger.error("Error during status publication.", e);
+                    log.error("Error during status publication.", e);
                 }
             }
         };

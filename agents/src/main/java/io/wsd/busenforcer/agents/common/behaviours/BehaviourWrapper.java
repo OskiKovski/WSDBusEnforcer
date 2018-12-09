@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class BehaviourWrapper<T extends Agent> {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     protected final T agent;
 

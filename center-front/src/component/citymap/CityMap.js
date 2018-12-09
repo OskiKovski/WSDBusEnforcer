@@ -27,7 +27,9 @@ class CityMap extends Component {
 	}		
 	
     getPoliceMarkers() {
-        return this.getMarkersOfType(this.props.data.policeUnits, "policeUnit");
+		const availableMarkers = this.getMarkersOfType(this.props.data.policeUnits.filter(unit => unit.available), "availablePoliceUnit");
+		const unavailableMarkers = this.getMarkersOfType(this.props.data.policeUnits.filter(unit => !unit.available), "unavailablePoliceUnit");
+        return [...availableMarkers, ...unavailableMarkers];
     }
 
     getBusMarkers() {

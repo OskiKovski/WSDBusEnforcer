@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum Topics {
     BUS_STATUS("bus-status"),
-    POLICE_STATUS("poplice-status"),
+    POLICE_STATUS("police-status"),
     DANGEROUS_EVENTS("dangerous-events");
 
     private final String name;
