@@ -27,7 +27,7 @@ public class PoliceAgentRunner extends SpringAgentRunner<PoliceAgent> {
 
     @Override
     protected PoliceAgent createAgent() {
-        PoliceState initialPoliceState = new PoliceState(id, new Location(lat, lon));
+        PoliceState initialPoliceState = new PoliceState(id, new Location(lat, lon), false);
         return new PoliceAgent(initialPoliceState);
     }
 
