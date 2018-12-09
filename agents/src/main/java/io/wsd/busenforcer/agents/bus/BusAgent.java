@@ -3,7 +3,7 @@ package io.wsd.busenforcer.agents.bus;
 import io.wsd.busenforcer.agents.bus.behaviours.PublishBusStatusBehaviour;
 import io.wsd.busenforcer.agents.bus.model.BusState;
 import io.wsd.busenforcer.agents.common.BaseAgent;
-import io.wsd.busenforcer.agents.common.o2a.O2ABehaviour;
+import io.wsd.busenforcer.agents.common.behaviours.O2ABehaviour;
 
 public class BusAgent extends BaseAgent<BusState> {
 

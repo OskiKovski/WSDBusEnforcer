@@ -13,7 +13,7 @@ import jade.lang.acl.MessageTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class   TopicListenerBehaviour extends SequentialBehaviour {
+public abstract class TopicListenerBehaviour extends SequentialBehaviour {
 
     private final Topics topic;
     private MessageTemplate template = null;
@@ -62,6 +62,17 @@ public abstract class   TopicListenerBehaviour extends SequentialBehaviour {
                 return template == null;
             }
         });
+    }
+
+    public void unregisterTopic() {
+        try {
+            TopicManagementHelper topicHelper = (TopicManagementHelper)
+                    myAgent.getHelper(TopicManagementHelper.SERVICE_NAME);
+            AID topicAID = topicHelper.createTopic(topic.getName());
+            topicHelper.register(topicAID);
+        } catch (ServiceException e) {
+            log.error("Failed to unregister on topic \"" + topic + "\".", e);
+        }
     }
 
     protected abstract void handleMessage(ACLMessage msg);

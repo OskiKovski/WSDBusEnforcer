@@ -19,13 +19,12 @@ public class CommandCenterAgent extends BaseAgent<CommandCenterState> {
     @Override
     public void setup() {
         log.info("Started.");
-        addBehaviour(new BusStatusTopicListenerBehaviour(this));
-        addBehaviour(new PoliceStatusTopicListenerBehaviour(this));
-    }
-
-    @Override
-    public void takeDown() {
-
+        BusStatusTopicListenerBehaviour busStatusListener = new BusStatusTopicListenerBehaviour(this);
+        addBehaviour(busStatusListener);
+        addTakeDownAction(busStatusListener::unregisterTopic);
+        PoliceStatusTopicListenerBehaviour policeStatusListener = new PoliceStatusTopicListenerBehaviour(this);
+        addBehaviour(policeStatusListener);
+        addTakeDownAction(policeStatusListener::unregisterTopic);
     }
 
 }

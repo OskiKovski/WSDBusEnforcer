@@ -1,5 +1,6 @@
-package io.wsd.busenforcer.agents.common.o2a;
+package io.wsd.busenforcer.agents.common.behaviours;
 
+import io.wsd.busenforcer.agents.common.o2a.O2ACommand;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import org.slf4j.Logger;

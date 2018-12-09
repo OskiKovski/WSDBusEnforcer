@@ -21,8 +21,6 @@ public class AgentService {
     private static final String FAILED = "Failed!";
     private static final String SUCCESS = "Success.";
 
-    Logger logger = LoggerFactory.getLogger(AgentService.class);
-
     @Autowired
     BusAgentRunner busAgentRunner;
 
